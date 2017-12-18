@@ -1,0 +1,14 @@
+
+
+
+BED <- read.table("BELD_expression_13_tissues_FPKM_2.xls",sep="\t",row.names=1,header=T)
+library(gplots)
+BED[1:5,1:5]
+
+png("Heatmap_BELD_expression_Encode_13_tissues.png",width = 800, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(6,low="grey85",high="steelblue"),breaks=c(0:6),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+
+

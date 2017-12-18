@@ -1,0 +1,418 @@
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E10.5_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/66471857
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E10.5_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/48020189
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation)) 
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_E10.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_E10.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E11.5_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/18000644
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E11.5_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/16029127
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_E11.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_E11.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E12.5_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/33996891
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E12.5_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/37070716
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_E12.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_E12.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E13.5_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/38012789
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E13.5_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/37014491
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_E13.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_E13.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E14.5_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/23232832
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E14.5_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/24478023
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_E14.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_E14.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E15.5_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/41233909
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E15.5_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/35449045
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_E15.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_E15.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E16.5_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/27521669
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_E16.5_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/25036299
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_E16.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_E16.5_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_P0_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/20909279
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_forebrain_P0_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/23764525
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_forebrain_P0_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_forebrain_P0_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+wt1 <- read.table("Body_Greenberg_H3K27ac_2wk_Cortex_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/26568579
+wt2 <- read.table("Body_Greenberg_H3K27ac_2wk_Cortex_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/38746886
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Greenberg_H3K27ac_2wk_Cortex_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Greenberg_H3K27ac_2wk_Cortex_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+wt1 <- read.table("Body_Encode_H3K27ac_mouse_Cortex_8w_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/7345229
+wt2 <- read.table("Body_Encode_H3K27ac_mouse_Cortex_8w_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/7763712
+
+library(gplots)
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+BED  <- (wt1_new[name_order,] + wt2_new[name_order,])/2
+BED[1:5,1:5]
+
+png("Heatmap_BELD_body_Encode_H3K27ac_mouse_Cortex_8w_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(BED),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- (wt1_new[name_order2,] + wt2_new[name_order2,])/2
+nonBEDlong[1:5,1:5]
+
+png("Heatmap_nonBELDlong_body_Encode_H3K27ac_mouse_Cortex_8w_100kbupdown.png",width = 600, height = 600)
+heatmap.2(as.matrix(nonBEDlong),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),
+density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+length(BED[,1])
+length(nonBEDlong[,1])
+
+
+
+
+
+
+

@@ -1,0 +1,151 @@
+
+fpkm <- read.table("Merged_Encode_H3K27ac_whole_gene_RPKM.txt",header=T,sep="\t",row.names=1)
+fpkm[1:3,]
+dim(fpkm)
+
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation)) 
+BED  <- fpkm[name_order,]
+BED[1:3,]
+dim(BED)
+tmp1 <- data.frame(Time=rep("E10.5",length(BED[,1])),FPKM = (BED[,1] + BED[,2])/2)
+tmp2 <- data.frame(Time=rep("E11.5",length(BED[,1])),FPKM = (BED[,3] + BED[,4])/2)
+tmp3 <- data.frame(Time=rep("E12.5",length(BED[,1])),FPKM = (BED[,5] + BED[,6])/2)
+tmp4 <- data.frame(Time=rep("E13.5",length(BED[,1])),FPKM = (BED[,7] + BED[,8])/2)
+tmp5 <- data.frame(Time=rep("E14.5",length(BED[,1])),FPKM = (BED[,9] + BED[,10])/2)
+tmp6 <- data.frame(Time=rep("E15.5",length(BED[,1])),FPKM = (BED[,11] + BED[,12])/2)
+tmp7 <- data.frame(Time=rep("E16.5",length(BED[,1])),FPKM = (BED[,13] + BED[,14])/2)
+tmp8 <- data.frame(Time=rep("P0",length(BED[,1])),FPKM = (BED[,15] + BED[,16])/2)
+tmp9 <- data.frame(Time=rep("P14",length(BED[,1])),FPKM = (BED[,17] + BED[,18])/2)
+tmp10 <- data.frame(Time=rep("P56",length(BED[,1])),FPKM = (BED[,19] + BED[,20])/2)
+merge <- data.frame(rbind(tmp1,tmp2,tmp3,tmp4,tmp5,tmp6,tmp7,tmp8,tmp9,tmp10))
+
+#png("Boxplot_BELD_H3K27ac_RPKM_time_points.png",width = 800, height = 600)
+boxplot(merge$FPKM~factor(merge$Time,levels=c("E10.5","E11.5","E12.5","E13.5","E14.5","E15.5","E16.5","P0","P14","P56")),ylim=c(0,3),outlier=FALSE)
+#dev.off()
+merge2 <- data.frame(rbind(tmp6,tmp8,tmp9,tmp10))
+png("Boxplot_BELD_H3K27ac_RPKM_time_points_postnatal.png")
+boxplot(merge2$FPKM~factor(merge2$Time,levels=c("E15.5","P0","P14","P56")),ylim=c(0,3),outline=FALSE,col=rgb(0,170,160,max=255))
+dev.off()
+t.test(tmp8$FPKM,tmp9$FPKM,alternative="less") ## P0--P14  p-value = 0.0004089
+t.test(tmp9$FPKM,tmp10$FPKM,alternative="less") ## P14-P56 p-value < 2.2e-16
+
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBED  <- fpkm[name_order2,]
+nonBED[1:3,]
+dim(nonBED)
+tmpn1 <- data.frame(Time=rep("E10.5",length(nonBED[,1])),FPKM = (nonBED[,1] + nonBED[,2])/2)
+tmpn2 <- data.frame(Time=rep("E11.5",length(nonBED[,1])),FPKM = (nonBED[,3] + nonBED[,4])/2)
+tmpn3 <- data.frame(Time=rep("E12.5",length(nonBED[,1])),FPKM = (nonBED[,5] + nonBED[,6])/2)
+tmpn4 <- data.frame(Time=rep("E13.5",length(nonBED[,1])),FPKM = (nonBED[,7] + nonBED[,8])/2)
+tmpn5 <- data.frame(Time=rep("E14.5",length(nonBED[,1])),FPKM = (nonBED[,9] + nonBED[,10])/2)
+tmpn6 <- data.frame(Time=rep("E15.5",length(nonBED[,1])),FPKM = (nonBED[,11] + nonBED[,12])/2)
+tmpn7 <- data.frame(Time=rep("E16.5",length(nonBED[,1])),FPKM = (nonBED[,13] + nonBED[,14])/2)
+tmpn8 <- data.frame(Time=rep("P0",length(nonBED[,1])),FPKM = (nonBED[,15] + nonBED[,16])/2)
+tmpn9 <- data.frame(Time=rep("P14",length(nonBED[,1])),FPKM = (nonBED[,17] + nonBED[,18])/2)
+tmpn10 <- data.frame(Time=rep("P56",length(nonBED[,1])),FPKM = (nonBED[,19] + nonBED[,20])/2)
+mergen <- data.frame(rbind(tmpn1,tmpn2,tmpn3,tmpn4,tmpn5,tmpn6,tmpn7,tmpn8,tmpn9,tmpn10))
+
+#png("Boxplot_nonBELD_H3K27ac_RPKM_time_points.png",width = 800, height = 600)
+boxplot(mergen$FPKM~factor(mergen$Time,levels=c("E10.5","E11.5","E12.5","E13.5","E14.5","E15.5","E16.5","P0","P14","P56")),ylim=c(0,3),ylab="H3K27ac RPKM")
+#dev.off()
+mergen2 <- data.frame(rbind(tmpn6,tmpn8,tmpn9,tmpn10))
+png("Boxplot_nonBELD_H3K27ac_RPKM_time_points_postnatal.png")
+boxplot(mergen2$FPKM~factor(mergen2$Time,levels=c("E15.5","P0","P14","P56")),ylim=c(0,3),outline=FALSE,col=rgb(255,184,95,max=255))
+dev.off()
+t.test(tmpn8$FPKM,tmpn9$FPKM,alternative="less") ## P0--P14  p-value = 0.8152
+t.test(tmpn9$FPKM,tmpn10$FPKM,alternative="less") ## P14-P56 p-value = 0.09231
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(beeswarm)
+png("Boxplot_BELD_H3K27ac_RPKM_time_points.png",width = 800, height = 600)
+boxplot(merge$FPKM~factor(merge$Time,levels=c("E10.5","E11.5","E12.5","E13.5","E14.5","E15.5","E16.5","P0","P14","P56")),ylim=c(0,3),ylab="H3K27ac RPKM")
+stripchart(merge$FPKM~factor(merge$Time,levels=c("E10.5","E11.5","E12.5","E13.5","E14.5","E15.5","E16.5","P0","P14","P56")), vertical = TRUE, method = "jitter", add = TRUE, pch = 20, col = 'blue')
+dev.off()
+
+
+library(beeswarm)
+beeswarm(merge$FPKM~factor(merge$Time,levels=c("E10.5","E11.5","E12.5","E13.5","E14.5","E15.5","E16.5","P0","P14","P56")),ylim=c(0,3),method = "swarm")
+beeswarm(merge2$FPKM~factor(merge2$Time,levels=c("P0","P14","P56")),ylim=c(0,3),ylab="H3K27ac RPKM",method = "swarm")
+decrease ~ treatment, data = OrchardSprays, 
+  log = TRUE, pch = 16, col = rainbow(8),
+  main = 'beeswarm')
+
+merge2 <- data.frame(rbind(tmp6,tmp8,tmp9,tmp10))
+png("Boxplot_BELD_H3K27ac_RPKM_time_points_postnatal.png",width = 800, height = 600)
+boxplot(merge2$FPKM~factor(merge2$Time,levels=c("E15.5","P0","P14","P56")),ylim=c(0,3),ylab="H3K27ac RPKM")
+beeswarm(merge2$FPKM~factor(merge2$Time,levels=c("P0","P14","P56")),ylim=c(0,3), col=rgb(0,170,160,max=255), pch=19, method = "swarm")
+boxplot(merge2$FPKM~factor(merge2$Time,levels=c("P0","P14","P56")),add=TRUE)
+dev.off()
+
+t.test(tmp8$FPKM,tmp9$FPKM,alternative="less") ## P0--P14  p-value = 0.0004089
+t.test(tmp9$FPKM,tmp10$FPKM,alternative="less") ## P14-P56 p-value < 2.2e-16
+
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBED  <- fpkm[name_order2,]
+
+nonBED[1:3,]
+dim(nonBED)
+tmpn1 <- data.frame(Time=rep("E10.5",length(nonBED[,1])),FPKM = (nonBED[,1] + nonBED[,2])/2)
+tmpn2 <- data.frame(Time=rep("E11.5",length(nonBED[,1])),FPKM = (nonBED[,3] + nonBED[,4])/2)
+tmpn3 <- data.frame(Time=rep("E12.5",length(nonBED[,1])),FPKM = (nonBED[,5] + nonBED[,6])/2)
+tmpn4 <- data.frame(Time=rep("E13.5",length(nonBED[,1])),FPKM = (nonBED[,7] + nonBED[,8])/2)
+tmpn5 <- data.frame(Time=rep("E14.5",length(nonBED[,1])),FPKM = (nonBED[,9] + nonBED[,10])/2)
+tmpn6 <- data.frame(Time=rep("E15.5",length(nonBED[,1])),FPKM = (nonBED[,11] + nonBED[,12])/2)
+tmpn7 <- data.frame(Time=rep("E16.5",length(nonBED[,1])),FPKM = (nonBED[,13] + nonBED[,14])/2)
+tmpn8 <- data.frame(Time=rep("P0",length(nonBED[,1])),FPKM = (nonBED[,15] + nonBED[,16])/2)
+tmpn9 <- data.frame(Time=rep("P14",length(nonBED[,1])),FPKM = (nonBED[,17] + nonBED[,18])/2)
+tmpn10 <- data.frame(Time=rep("P56",length(nonBED[,1])),FPKM = (nonBED[,19] + nonBED[,20])/2)
+mergen <- data.frame(rbind(tmpn1,tmpn2,tmpn3,tmpn4,tmpn5,tmpn6,tmpn7,tmpn8,tmpn9,tmpn10))
+
+png("Boxplot_nonBELD_H3K27ac_RPKM_time_points.png",width = 800, height = 600)
+boxplot(mergen$FPKM~factor(mergen$Time,levels=c("E10.5","E11.5","E12.5","E13.5","E14.5","E15.5","E16.5","P0","P14","P56")),ylim=c(0,3),ylab="H3K27ac RPKM")
+dev.off()
+
+mergen2 <- data.frame(rbind(tmpn8,tmpn9,tmpn10))
+png("Boxplot_nonBELD_H3K27ac_RPKM_time_points_postnatal.png",width = 800, height = 600)
+boxplot(mergen2$FPKM~factor(mergen2$Time,levels=c("P0","P14","P56")),ylim=c(0,3),ylab="H3K27ac RPKM")
+dev.off()
+
+t.test(tmpn8$FPKM,tmpn9$FPKM,alternative="less") ## P0--P14  p-value = 0.8152
+t.test(tmpn9$FPKM,tmpn10$FPKM,alternative="less") ## P14-P56 p-value = 0.09231
+
