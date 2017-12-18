@@ -1,0 +1,45 @@
+library("edgeR")
+data_raw <- read.table("Merged_GROseq_whole_gene_counts_Jerry.txt",sep="\t",header=T,row.names=1)
+
+## for normalization, every column is independent
+## including only 2 WT or 2WT +2R106W , the results are the same
+data <- data_raw[,1:2]
+data[1:5,]
+data_y <- DGEList(counts=data, group=c("WT","WT"))
+round(cpm(data_y),3)[1:5,]
+data <- data_raw[,1:4]
+data[1:5,]
+data_y <- DGEList(counts=data, group=c("WT","WT","R106W","R106W"))
+round(cpm(data_y),3)[1:5,]
+
+
+## Normalize all data sets together
+data <- data_raw
+data[1:5,]
+data_y <- DGEList(counts=data, group=c("WT","WT","R106W","R106W","AtT20","Heart","Macrophase","Macrophase","MEF","MEF","mESC","mESC","mESC","Primary_neurons","White_Adipose"))
+length_gene <- read.table("Gene_length.txt",header=T,row.names=1,sep="\t")
+
+rpm_total <- cbind(cpm(data_y),Length=length_gene)
+rpm_total[1:5,]
+rpkm_total <- round(rpm_total*1000/rpm_total$Length,3)
+rpkm_total[1,]
+
+total <- cbind(rpm_total,rpkm_total[,1:15])
+total[1:5,]
+
+colnames(total)
+# [1] "WT1"             "WT2"             "R106W1"          "R106W2"         
+# [5] "AtT20"           "Heart"           "Macrophase1"     "Macrophase2"    
+# [9] "MEF1"            "MEF2"            "mESC1"           "mESC2"          
+#[13] "mESC3"           "Primary_neurons" "White_Adipose"   "Length"         
+#[17] "WT1"             "WT2"             "R106W1"          "R106W2"         
+#[21] "AtT20"           "Heart"           "Macrophase1"     "Macrophase2"    
+#[25] "MEF1"            "MEF2"            "mESC1"           "mESC2"          
+#[29] "mESC3"           "Primary_neurons" "White_Adipose"  
+colnames(total) <- c("CPM_WT1","CPM_WT2","CPM_R106W1","CPM_R106W2","CPM_AtT20","CPM_Heart","CPM_Macrophase1","CPM_Macrophase2","CPM_MEF1","CPM_MEF2",
+                     "CPM_mESC1","CPM_mESC2","CPM_mESC3","CPM_Primary_neurons","CPM_White_Adipose","Length",
+                     "RPKM_WT1","RPKM_WT2","RPKM_R106W1","RPKM_R106W2","RPKM_AtT20","RPKM_Heart","RPKM_Macrophase1","RPKM_Macrophase2","RPKM_MEF1","RPKM_MEF2",
+                     "RPKM_mESC1","RPKM_mESC2","RPKM_mESC3","RPKM_Primary_neurons","RPKM_White_Adipose")
+total[1,]
+write.table(total,"Merged_GROseq_whole_gene_counts_Jerry_RPKM.txt",sep="\t",quote=FALSE)
+

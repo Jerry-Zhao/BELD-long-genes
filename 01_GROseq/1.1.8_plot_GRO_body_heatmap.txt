@@ -1,0 +1,27 @@
+wt1 <- read.table("GROseq_WT_cortex_rep1_GROseq_body_activeGene.txt",sep="\t",row.names=1)*30000000/52978406
+wt2 <- read.table("GROseq_WT_cortex_rep2_GROseq_body_activeGene.txt",sep="\t",row.names=1)*30000000/51858512
+library(gplots)
+
+annotation_raw <- read.table("Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation)) 
+
+wt  <- (wt1[name_order,] + wt2[name_order,])/2
+dim(wt)
+
+png("GRO_WTsignal_body_byLength_heatmap.png") ## 500bp up-down
+heatmap.2(as.matrix(wt[,501:2500]),Rowv=F,Colv=F,trace="none",dendrogram="none",scale="none",labRow=NA,labCol=NA,col=colorpanel(10,low="grey85",high="red"),breaks=c(0:10/0.5),density.info="none",keysize=1,cexCol=1,margins=c(5,5))
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
