@@ -1,0 +1,39 @@
+wt <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",sep="\t",header=T,row.names=1)
+wt[1:5,]
+
+annotation_raw <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+dim(wt)
+BED  <- wt[name_order,]
+annotation_raw2 <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- wt[name_order2,]
+length(wt[,1]) #[1] 10998
+length(BED[,1])  ## 185
+length(nonBEDlong[,1]) ## 185
+
+t.test(BED$PI30,nonBEDlong$PI30,alternative="less") ## 
+#	Welch Two Sample t-test
+#
+# data:  BED$PI30 and nonBEDlong$PI30
+# t = -5.9106, df = 242.87, p-value = 5.738e-09
+# alternative hypothesis: true difference in means is less than 0
+# 95 percent confidence interval:
+#       -Inf -4.454247
+# sample estimates:
+# mean of x mean of y 
+#  4.013657 10.194569 
+
+
+
+tmp1 <- data.frame(Category=rep("BED",length(BED[,1])),PI30=BED$PI30)
+tmp2 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),PI30=nonBEDlong$PI30)
+tmp1[1:5,]
+tmp2[1:5,]
+merge <- data.frame(rbind(tmp1,tmp2))
+png("PI30_BELD_nonBELD_boxplot.png")
+boxplot(merge$PI30~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,40),outcol="grey")
+dev.off()
+

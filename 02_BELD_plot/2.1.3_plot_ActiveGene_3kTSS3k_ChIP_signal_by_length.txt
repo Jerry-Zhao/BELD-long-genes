@@ -1,0 +1,406 @@
+1. Cortex
+wt1 <- read.table("Mo_WT_excitatory_H3K27ac_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/22557367
+wt2 <- read.table("Mo_WT_excitatory_H3K27ac_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/26151360
+
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_H3K27ac.png")
+plot(rep(1,6001),col="white",ylim=c(0,40))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,40,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,40,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+
+
+wt1 <- read.table("Mo_WT_excitatory_H3K4me1_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/35446101
+wt2 <- read.table("Mo_WT_excitatory_H3K4me1_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/33548288
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_H3K4me1.png")
+plot(rep(1,6001),col="white",ylim=c(0,40))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,40,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,40,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+
+
+
+wt1 <- read.table("Our_cortex_H3K4me3_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/23764454
+wt2 <- read.table("Our_cortex_H3K4me3_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/28261959
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_H3K4me3.png")
+plot(rep(1,6001),col="white",ylim=c(0,150))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,150,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,150,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+
+
+
+
+wt1 <- read.table("ATAC_Nex_p_WT_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/46950638
+wt2 <- read.table("ATAC_Nex_p_WT_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/37473435
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ATAC.png")
+plot(rep(1,6001),col="white",ylim=c(0,70))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,70,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off() 
+
+
+
+
+
+wt1 <- read.table("ChIP201707_WT_H3K27ac_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/72096607
+wt2 <- read.table("ChIP201707_WT_H3K27ac_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/39635083
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H3K27ac.png")
+plot(rep(1,6001),col="white",ylim=c(0,30))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,30,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+wt1 <- read.table("ChIP201707_WT_H3K36me3_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/26268964
+wt2 <- read.table("ChIP201707_WT_H3K36me3_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/97632459
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H3K36me3.png")
+plot(rep(1,6001),col="white",ylim=c(0,30))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,30,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+wt1 <- read.table("ChIP201707_WT_H3K4me1_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/30092091
+wt2 <- read.table("ChIP201707_WT_H3K4me1_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/53831835
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H3K4me1.png")
+plot(rep(1,6001),col="white",ylim=c(0,30))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,30,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+wt1 <- read.table("ChIP201707_WT_H3K4me3_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/80774272
+wt2 <- read.table("ChIP201707_WT_H3K4me3_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/83040387
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H3K4me3.png")
+plot(rep(1,6001),col="white",ylim=c(0,150))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,150,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+wt1 <- read.table("ChIP201707_WT_H3K79me2_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/92216556
+wt2 <- read.table("ChIP201707_WT_H3K79me2_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/58683063
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H3K79me2.png")
+plot(rep(1,6001),col="white",ylim=c(0,70))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,70,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+wt1 <- read.table("ChIP201707_WT_H3K9me3_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/39955833
+wt2 <- read.table("ChIP201707_WT_H3K9me3_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/23678180
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H3K9me3.png")
+plot(rep(1,6001),col="white",ylim=c(0,30))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,30,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+wt1 <- read.table("ChIP201707_WT_H4K16ac_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/58566250
+wt2 <- read.table("ChIP201707_WT_H4K16ac_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/86791236
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H4K16ac.png")
+plot(rep(1,6001),col="white",ylim=c(0,30))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,30,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+wt1 <- read.table("ChIP201707_WT_H4K20me3_rep1_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/24843073
+wt2 <- read.table("ChIP201707_WT_H4K20me3_rep2_3kTSS3k_activeGene.txt",sep="\t",row.names=1)*30000000/51028097
+annotation <- read.table("../01_GROseq/Data_length_PI_cortex_WT.xls",header=T,sep="\t")
+length1  <- matrix(row.names(annotation[annotation$Length<50000,]))
+length2  <- matrix(row.names(annotation[annotation$Length>=50000 & annotation$Length<100000,]))
+length3  <- matrix(row.names(annotation[annotation$Length>=100000 & annotation$Length<200000,]))
+length4  <- matrix(row.names(annotation[annotation$Length>=200000,]))
+wt_length1  <- (wt1[length1,] + wt2[length1,])/2
+wt_length2  <- (wt1[length2,] + wt2[length2,])/2
+wt_length3  <- (wt1[length3,] + wt2[length3,])/2
+wt_length4  <- (wt1[length4,] + wt2[length4,])/2
+
+#### mean
+mean_length1  <- as.matrix(rep(0,6001),nrow=1)
+mean_length2  <- as.matrix(rep(0,6001),nrow=1)
+mean_length3  <- as.matrix(rep(0,6001),nrow=1)
+mean_length4  <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_length1[i]  <- mean(wt_length1[,i] ); }
+for (i in 1:6001) { mean_length2[i]  <- mean(wt_length2[,i] ); }
+for (i in 1:6001) { mean_length3[i]  <- mean(wt_length3[,i] ); }
+for (i in 1:6001) { mean_length4[i]  <- mean(wt_length4[,i] ); }
+png("Length_3kTSS3k_cortex_ChIP201707_WT_H4K20me3.png")
+plot(rep(1,6001),col="white",ylim=c(0,70))
+points(mean_length1,  type="l",col="grey",lwd=3)
+points(mean_length2,  type="l",col="grey31",lwd=3)
+points(mean_length3,  type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_length4,  type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(0,70,c(" "," "," "," "),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,70,c("<50kb","50kb-100kb","100kb-200kb",">200kb"),col=c("grey","grey31",rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+

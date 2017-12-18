@@ -1,0 +1,43 @@
+########### cortex
+
+total <- read.table("Merged_GROseq_PI30_Cortex_mESC_RPKM_Length_Jerry.xls",sep="\t",header=T,row.names=1)
+total[1,]
+library(LSD)
+
+## WT1 + WT2
+length(total[,1]) #22234 Total gene >1kb
+length(total[(total$RPKM_WT1+total$RPKM_WT2)/2>0.5,][,1]) #RPKM >0.5     10998
+length(total[(total$RPKM_WT1+total$RPKM_WT2)/2>0.5 & (total$BODY30_WT1+total$BODY30_WT2)==0,][,1]) ## RPKM>0.5 and Body_density=0   0
+length(total[(total$RPKM_WT1+total$RPKM_WT2)/2>0.5 & (total$BODY30_WT1+total$BODY30_WT2)>0,][,1]) ## RPKM>0.5 and Body_density>0    10998
+wt <- total[(total$RPKM_WT1+total$RPKM_WT2)/2>0.5 & (total$BODY30_WT1+total$BODY30_WT2)>0,][,c(1,2,9,10,11,12,13)]
+length(wt[,1])
+
+short  <- wt[wt$Length<50000,]
+medium <- wt[wt$Length>=50000 & wt$Length<100000,]
+medium2 <- wt[wt$Length>=100000 & wt$Length<200000,]
+long   <- wt[wt$Length>=200000,]
+
+png("Length_PI30_cortex_WT.png")
+plot(short$Length,((short$TSS30_WT1*60000000/52978406+short$TSS30_WT2*60000000/51858512)/330)/((short$BODY30_WT1*60000000/52978406+short$BODY30_WT2*60000000/51858512)/(short$Length-300)),ylim=c(0,260),xlim=c(0,1800000),col="grey31",pch=20)
+points(medium$Length,((medium$TSS30_WT1*60000000/52978406+medium$TSS30_WT2*60000000/51858512)/330)/((medium$BODY30_WT1*60000000/52978406+medium$BODY30_WT2*60000000/51858512)/(medium$Length-300)),col=rgb(255,184,95,max=255),pch=20)
+points(medium2$Length,((medium2$TSS30_WT1*60000000/52978406+medium2$TSS30_WT2*60000000/51858512)/330)/((medium2$BODY30_WT1*60000000/52978406+medium2$BODY30_WT2*60000000/51858512)/(medium2$Length-300)),col=rgb(0,170,160,max=255),pch=20)
+points(long$Length,((long$TSS30_WT1*60000000/52978406+long$TSS30_WT2*60000000/51858512)/330)/((long$BODY30_WT1*60000000/52978406+long$BODY30_WT2*60000000/51858512)/(long$Length-300)),col=rgb(255,122,90,max=255),pch=20)
+dev.off()
+
+wt_raw <- total[(total$RPKM_WT1+total$RPKM_WT2)/2>0.5 & (total$BODY30_WT1+total$BODY30_WT2)>0,][,c(1,2,9,10,11,12,13)]
+wt_raw[1,]
+wt_new <- cbind(wt_raw,PI30=((wt_raw$TSS30_WT1*60000000/52978406+wt_raw$TSS30_WT2*60000000/51858512)/330)/((wt_raw$BODY30_WT1*60000000/52978406+wt_raw$BODY30_WT2*60000000/51858512)/(wt_raw$Length-300)))
+wt_new[1,]
+plot(wt_new$Length,wt_new$PI30,,ylim=c(0,260),xlim=c(0,1800000),col="darkgreen")
+#write.table(wt_new,file="Data_length_PI_cortex_WT.xls",quote=FALSE,sep="\t")
+
+chip_raw <- read.table("Merged_ChIP_whole_gene_counts_Jerry_RPKM.txt",sep="\t",header=T,row.names=1)
+length(chip_raw[,1])
+chip <- chip_raw[row.names(wt_new),]
+length(chip[,1])
+total2 <- cbind(chip,wt_new)
+write.table(total2,file="Data_length_PI30_ChIP_RPKM_cortex_WT.xls",quote=FALSE,sep="\t")
+
+
+
+

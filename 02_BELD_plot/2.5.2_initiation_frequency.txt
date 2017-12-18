@@ -1,0 +1,60 @@
+wt1_raw <- read.table("../01_GROseq/GROseq_WT_cortex_rep1_GROseq_body_activeGene.txt",sep="\t",row.names=1)*60000000/52978406
+wt2_raw <- read.table("../01_GROseq/GROseq_WT_cortex_rep2_GROseq_body_activeGene.txt",sep="\t",row.names=1)*60000000/51858512
+
+selong <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+
+wt1 <- wt1_raw[,1001:2000]
+wt2 <- wt2_raw[,1001:2000]
+wt_selong  <- (wt1[name_selong,] + wt2[name_selong,])/2
+wt_nonselong  <- (wt1[name_nonselong,] + wt2[name_nonselong,])/2
+
+## Iintiation_frequency= (Paused + Elognated - Terminated)/Time = (Bin1*t + sum(bin2:bin1000)*t -mean(bin2:bin1000)*t)/t= sum(bin[1:1000])-sum(bin[2:1000])/999
+## Paused= Bin1*t
+## Elogated= sum(Bin2:Bin1000) * t
+## Terminated = Average-body-density *t = sum(Bin2:1000)/999  * t
+
+## Initiation frequency of nonSE-long-gene-mean was set to 1
+sum(wt_nonselong)/185 ## mean of the nonSE was set to one
+sum(wt_nonselong[,1:1000])/185
+dim(wt_selong) ## 185 1000
+dim(wt_nonselong) ## 185 1000
+
+initiation_selong       <- as.matrix(rep(-1000,185),nrow=1)
+initiation_nonselong    <- as.matrix(rep(-1000,185),nrow=1)
+
+for (i in 1:185)
+{
+ initiation_selong[i] <- (sum(wt_selong[i,1:1000]) - sum(wt_selong[i,2:1000])/999)/((sum(wt_nonselong)/185) - (sum(wt_nonselong[,2:1000])/185)/999)
+} ## normalized to mean-nonSE
+
+for (i in 1:185)
+{
+ initiation_nonselong[i] <- (sum(wt_nonselong[i,1:1000]) - sum(wt_nonselong[i,2:1000])/999)/((sum(wt_nonselong)/185) - (sum(wt_nonselong[,2:1000])/185)/999)
+} ## normalized to mean-nonSE
+
+tmp1 <- data.frame(Category=rep("BED",   length(wt_selong[,1])),Initiation=initiation_selong)
+tmp2 <- data.frame(Category=rep("nonBED",length(wt_nonselong[,1])),Initiation=initiation_nonselong)
+merge <- data.frame(rbind(tmp1,tmp2))
+png("Initiation_fold_increase_BED_nonBED_cortex.png")
+boxplot(merge$Initiation~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,5),outcol="grey")
+dev.off()
+
+
+t.test(initiation_selong,initiation_nonselong,alternative="greater")
+
+	Welch Two Sample t-test
+
+data:  initiation_selong and initiation_nonselong
+t = 12.527, df = 265.41, p-value < 2.2e-16
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 1.143014      Inf
+sample estimates:
+mean of x mean of y 
+ 2.316475  1.000000 
+
+
+

@@ -1,0 +1,36 @@
+#### all long genes: BED vs nonBEDlong
+all <- read.table("Total_20150928_FPKM_whole_gene.xls",sep="\t",header=T,row.names=1)
+
+fpkm <- all[,1:4]
+
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+BED_names <- matrix(row.names(BED))
+nonBEDlong_names <- matrix(row.names(nonBEDlong))
+
+bed <- fpkm[BED_names,]
+nonbed <- fpkm[nonBEDlong_names,]
+
+tmp1 <- data.frame(Category=rep("BED",length(bed[,1])),      FPKM=rowMeans(bed),   CPM_K4=BED[BED_names,][,1],              CPM_K27=BED[BED_names,][,2])
+tmp2 <- data.frame(Category=rep("nonBED",length(nonbed[,1])),FPKM=rowMeans(nonbed),CPM_K4=nonBEDlong[nonBEDlong_names,][,1],CPM_K27=nonBEDlong[nonBEDlong_names,][,2])
+merge <- data.frame(rbind(tmp1,tmp2))
+
+png("FPKM_cortex_BED_nonBEDlong.png")
+boxplot(merge$FPKM~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,8),outcol="grey")
+dev.off()
+
+t.test(rowMeans(bed),rowMeans(nonbed),alternative="greater")
+
+	Welch Two Sample t-test
+
+data:  rowMeans(bed) and rowMeans(nonbed)
+t = 11.891, df = 241.34, p-value < 2.2e-16
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 1.453617      Inf
+sample estimates:
+mean of x mean of y 
+ 2.840095  1.152068 
+
+
+

@@ -1,0 +1,72 @@
+BELD    <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+nonBELD <- read.table("BED_nonBEDTotal_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+tmp1 <- data.frame(Category=rep("BELD",   length(BELD[,1])),   Level=BELD$Length)
+tmp2 <- data.frame(Category=rep("nonBELD",length(nonBELD[,1])),Level=nonBELD$Length)
+merge <- data.frame(rbind(tmp1,tmp2))
+png("BELD_nonBELDTotal_gene_length_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("nonBELD","BELD")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,1000000),outcol="grey")
+dev.off()
+t.test(BELD$Length,nonBELD$Length,alternative="greater") #p-value < 2.2e-16
+dim(BELD)
+dim(nonBELD)
+
+
+
+
+BELD    <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1) 
+nonBELD <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+
+
+tmp1 <- data.frame(Category=rep("BELD",   length(BELD[,1])),   Level=BELD$Length)
+tmp2 <- data.frame(Category=rep("nonBELD",length(nonBELD[,1])),Level=nonBELD$Length)
+merge <- data.frame(rbind(tmp1,tmp2))
+
+#png("BELD_nonBELD_gene_length_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("BELD","nonBELD")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,1000000),outcol="grey")
+#dev.off()
+
+summary(BELD$Length)
+#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#  86570  240500  303400  364400  421100 1643000 
+
+summary(nonBELD$Length)
+#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#  86700  221300  262700  272500  316400  689300 
+
+
+
+#### Note
+# Although the nonBELDlong still a little bit shorter than the BELD genes. but this is the nature of the BELD genes. 
+# 1. I classified all expressed genes into 1000 bins by their gene length. 
+# 2. I calculated the number of BELD genes in each bins.
+# 3. I tried to randemly select the exact-number-of-nonBELD genes for the same bin. 
+
+# However, for the bins with very long gene length, they contain many BELD genes, but almost no nonBELD genes. 
+# For example, for the top 10 longest bins, they contain 28 BELD genes, but only 2 nonBELD genes. 
+# Therefore, it is impossible to obtain nonBELD control genes with the exact length distributin as the BELD genes. 
+# I tried my best to get the control nonBELD genes with compariable length.
+
+Error bin 999: nonBELD-Number(0) < BELD-Number(2) 
+Error bin 998: nonBELD-Number(0) < BELD-Number(4) 
+Error bin 997: nonBELD-Number(0) < BELD-Number(2) 
+Error bin 996: nonBELD-Number(0) < BELD-Number(3) 
+Error bin 995: nonBELD-Number(1) < BELD-Number(3) 
+Error bin 994: nonBELD-Number(0) < BELD-Number(2) 
+Error bin 993: nonBELD-Number(0) < BELD-Number(5) 
+Error bin 992: nonBELD-Number(0) < BELD-Number(2) 
+Error bin 991: nonBELD-Number(0) < BELD-Number(1) 
+Error bin 990: nonBELD-Number(1) < BELD-Number(4) 
+
+Error bin 988: nonBELD-Number(1) < BELD-Number(5) 
+Error bin 986: nonBELD-Number(1) < BELD-Number(5) 
+Error bin 985: nonBELD-Number(1) < BELD-Number(6) 
+Error bin 984: nonBELD-Number(1) < BELD-Number(6) 
+Error bin 978: nonBELD-Number(3) < BELD-Number(7) 
+Error bin 977: nonBELD-Number(5) < BELD-Number(6) 
+Error bin 976: nonBELD-Number(3) < BELD-Number(6) 
+Error bin 971: nonBELD-Number(4) < BELD-Number(6) 
+Error bin 965: nonBELD-Number(4) < BELD-Number(5) 
+Error bin 958: nonBELD-Number(3) < BELD-Number(4) 
+
+
+

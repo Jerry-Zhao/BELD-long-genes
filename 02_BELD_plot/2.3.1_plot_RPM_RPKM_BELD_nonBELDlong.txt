@@ -1,0 +1,87 @@
+total      <- read.table("Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+BED        <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+nonBEDlong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+
+length(total[,1]) ### [1] 10998
+length(BED[,1]) ### [1] 185
+length(nonBEDlong[,1]) ### [1] 185
+
+tmp1 <- data.frame(Category=rep("Expressed",length(total[,1])),Level=total$Length)
+tmp2 <- data.frame(Category=rep("BED",length(BED[,1])),Level=BED$Length)
+merge <- data.frame(rbind(tmp1,tmp2))
+png("BED_Expressed_gene_length_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("Expressed","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,1000000),outcol="grey")
+dev.off()
+
+t.test(total$Length,BED$Length,alternative="less") ## p-value < 2.2e-16
+
+# 	Welch Two Sample t-test
+# 
+# data:  total$Length and BED$Length
+# t = -19.003, df = 185.49, p-value < 2.2e-16
+# alternative hypothesis: true difference in means is less than 0
+# 95 percent confidence interval:
+#       -Inf -286361.8
+# sample estimates:
+# mean of x mean of y 
+#  50729.45 364376.56 
+
+
+
+tmp3 <- data.frame(Category=rep("BED",length(BED[,1])),Level=BED$CPM_k27)
+tmp4 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),Level=nonBEDlong$CPM_k27)
+merge <- data.frame(rbind(tmp3,tmp4))
+png("BED_nonBED_gene_K27_RPM_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,2000),outcol="grey")
+dev.off()
+t.test(nonBEDlong$CPM_k27,BED$CPM_k27,alternative="less") ## p-value < 2.2e-16
+
+tmp3 <- data.frame(Category=rep("BED",length(BED[,1])),Level=BED$CPM_k4)
+tmp4 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),Level=nonBEDlong$CPM_k4)
+merge <- data.frame(rbind(tmp3,tmp4))
+png("BED_nonBED_gene_K4_RPM_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,2000),outcol="grey")
+dev.off()
+t.test(nonBEDlong$CPM_k4,BED$CPM_k4,alternative="less") ## p-value < 2.2e-16
+
+tmp3 <- data.frame(Category=rep("BED",length(BED[,1])),Level=BED$CPM_ATAC)
+tmp4 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),Level=nonBEDlong$CPM_ATAC)
+merge <- data.frame(rbind(tmp3,tmp4))
+png("BED_nonBED_gene_ATAC_RPM_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,1500),outcol="grey")
+dev.off()
+t.test(nonBEDlong$CPM_ATAC,BED$CPM_ATAC,alternative="less") ## p-value < 2.2e-16
+
+
+
+
+tmp3 <- data.frame(Category=rep("BED",length(BED[,1])),Level=(BED$RPKM_H3K27ac_rep1+BED$RPKM_H3K27ac_rep2)/2)
+tmp4 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),Level=(nonBEDlong$RPKM_H3K27ac_rep1+nonBEDlong$RPKM_H3K27ac_rep2)/2)
+merge <- data.frame(rbind(tmp3,tmp4))
+png("BED_nonBED_gene_K27_RPKM_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,6),outcol="grey")
+dev.off()
+t.test((nonBEDlong$RPKM_H3K27ac_rep1+nonBEDlong$RPKM_H3K27ac_rep2)/2,(BED$RPKM_H3K27ac_rep1+BED$RPKM_H3K27ac_rep2)/2,alternative="less") ## p-value < 2.2e-16
+
+tmp3 <- data.frame(Category=rep("BED",length(BED[,1])),Level=(BED$RPKM_H3K4me1_rep1+BED$RPKM_H3K4me1_rep2)/2)
+tmp4 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),Level=(nonBEDlong$RPKM_H3K4me1_rep1+nonBEDlong$RPKM_H3K4me1_rep2)/2)
+merge <- data.frame(rbind(tmp3,tmp4))
+png("BED_nonBED_gene_K4_RPKM_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,6),outcol="grey")
+dev.off()
+t.test((nonBEDlong$RPKM_H3K4me1_rep1+nonBEDlong$RPKM_H3K4me1_rep2)/2,(BED$RPKM_H3K4me1_rep1+BED$RPKM_H3K4me1_rep2)/2,alternative="less") ## p-value < 2.2e-16
+
+
+tmp3 <- data.frame(Category=rep("BED",length(BED[,1])),Level=(BED$RPKM_ATAC_WT_rep1+BED$RPKM_ATAC_WT_rep2)/2)
+tmp4 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),Level=(nonBEDlong$RPKM_ATAC_WT_rep1+nonBEDlong$RPKM_ATAC_WT_rep2)/2)
+merge <- data.frame(rbind(tmp3,tmp4))
+png("BED_nonBED_gene_ATAC_RPKM_boxplot.png")
+boxplot(merge$Level~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,4),outcol="grey")
+dev.off()
+t.test((nonBEDlong$RPKM_ATAC_WT_rep1+nonBEDlong$RPKM_ATAC_WT_rep2)/2,(BED$RPKM_ATAC_WT_rep1+BED$RPKM_ATAC_WT_rep2)/2,alternative="less") ## p-value < 2.2e-16
+
+
+
+
+
+

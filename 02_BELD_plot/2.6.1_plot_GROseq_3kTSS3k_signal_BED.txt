@@ -1,0 +1,36 @@
+
+wt1 <- read.table("../01_GROseq/GROseq_WT_cortex_rep1_GROseq_TSS_activeGene.txt",sep="\t",row.names=1)*30000000/52978406 ## Normalization to total 30M uniquely mapped
+wt2 <- read.table("../01_GROseq/GROseq_WT_cortex_rep2_GROseq_TSS_activeGene.txt",sep="\t",row.names=1)*30000000/51858512 ## Normalization to total 30M uniquely mapped
+wt <- (wt1 + wt2)/2
+
+annotation_raw <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+BED  <- wt[name_order,]
+
+annotation_raw2 <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- wt[name_order2,]
+length(BED[,1])   ## 185
+length(nonBEDlong[,1]) ## 185
+
+#### mean
+mean_wt_nonBEDlong    <- as.matrix(rep(0,6001),nrow=1)
+mean_wt_BED      <- as.matrix(rep(0,6001),nrow=1)
+for (i in 1:6001) { mean_wt_nonBEDlong[i] <- mean(nonBEDlong[,i]); }
+for (i in 1:6001) { mean_wt_BED[i]   <- mean(BED[,i]); }
+png("BED_GROseq_all_2kTSS2k_mean.png")
+plot(rep(1,4001),col="white",ylim=c(0,30))
+points(mean_wt_nonBEDlong[1000:5000,], type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_wt_BED[1000:5000,],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(0,40,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(0,35,c("BED","non-BED long"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+
+
+
+
+
+
+

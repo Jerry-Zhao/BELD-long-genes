@@ -1,0 +1,108 @@
+total <- read.table("Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+length(total[,1]) ### [1] 10998
+
+total2 <- data.frame(CPM_k4=(total$CPM_H3K4me1_rep1+total$CPM_H3K4me1_rep2)/2,CPM_k27=(total$CPM_H3K27ac_rep1+total$CPM_H3K27ac_rep2)/2,total)
+total3 <- total2[order(total2$CPM_k4),]
+
+png("BED_Cortex_H3K4me1_rank.png")
+plot(total3$CPM_k4,pch=20,xlim=c(-100,11000),ylim=c(-100,2500),cex=0.7)
+abline(-10400,1,col=rgb(0,170,160,max=255),lwd=3)
+points(total3$CPM_k4,pch=20,cex=0.7)
+lines(x=c(-300,10700), y=c(365,365), lty="dashed", col="grey",lwd=1)
+points(10997,2315.54963,col="red",pch=20,cex=0.7) ## Csmd1
+points(10987,1499.38708,col="red",pch=20,cex=0.7) ## Nrxn1
+points(10972,1145.49044,col="red",pch=20,cex=0.7) ## Grin2b
+points(10965,1042.41554,col="red",pch=20,cex=0.7) ## Atp2b2
+points(10964,1041.74348,col="red",pch=20,cex=0.7) ## Grin2a
+points(10961,981.88600,col="red",pch=20,cex=0.7) ## Kcnma1
+points(10956,951.02161,col="red",pch=20,cex=0.7) ## Ank2
+points(10945,889.39343,col="red",pch=20,cex=0.7) ## Shank2
+points(10930,821.54531,col="red",pch=20,cex=0.7) ## Celf4
+points(10922,787.34715,col="red",pch=20,cex=0.7) ## Trio
+dev.off()
+
+png("BED_Cortex_H3K4me1_rank_K27ac.png") ## rank by k4me1, plot K27ac
+plot(total3$CPM_k27,pch=20,xlim=c(-100,11000),ylim=c(-100,2500),cex=0.7)
+dev.off()
+
+
+total3_new <- total2[order(total2$CPM_k27),]
+png("BED_Cortex_H3K27ac_rank.png")
+plot(total3_new$CPM_k27,pch=20,xlim=c(-100,11000),ylim=c(-100,3000),cex=0.7)
+abline(-10400,1,col=rgb(0,170,160,max=255),lwd=3)
+points(total3_new$CPM_k27,pch=20,cex=0.7)
+lines(x=c(-300,10700), y=c(365,365), lty="dashed", col="grey",lwd=1)
+points(10996,2558.7611,col="red",pch=20,cex=0.7) ## Csmd1
+points(10984,1607.8431,col="red",pch=20,cex=0.7) ## Nrxn1
+points(10978,1448.3058,col="red",pch=20,cex=0.7) ## Grin2b
+points(10974,1335.6302,col="red",pch=20,cex=0.7) ## Atp2b2
+points(10972,1272.8262,col="red",pch=20,cex=0.7) ## Grin2a
+points(10961,1093.0664,col="red",pch=20,cex=0.7) ## Kcnma1
+points(10950,1001.4961,col="red",pch=20,cex=0.7) ## Ank2
+points(10939,939.0416,col="red",pch=20,cex=0.7) ## Shank2
+points(10935,906.6321,col="red",pch=20,cex=0.7) ## Trio     Trio and Celf4 switched between K4me1 and K27ac
+points(10933,889.2256,col="red",pch=20,cex=0.7) ## Celf4
+dev.off()
+
+
+### rank by H3K27ac, plot H3K4me1 and ATAC-seq
+total <- read.table("Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+length(total[,1]) ### [1] 10998
+total2 <- data.frame(CPM_k4=(total$CPM_H3K4me1_rep1+total$CPM_H3K4me1_rep2)/2,CPM_k27=(total$CPM_H3K27ac_rep1+total$CPM_H3K27ac_rep2)/2,
+                     CPM_ATAC=(total$CPM_ATAC_WT_rep1+total$CPM_ATAC_WT_rep2)/2,total)
+total3 <- total2[order(total2$CPM_k27),]
+long6 <- data.frame(total3,Rank=c(1:length(total3[,1])))
+long6[1:5,]
+SElong <-    long6[long6$CPM_k4>365 & long6$CPM_k27>365 & (long6$RPKM_H3K4me1_rep1+long6$RPKM_H3K4me1_rep2)/2>1.3 & (long6$RPKM_H3K27ac_rep1+long6$RPKM_H3K27ac_rep2)/2>1.3,]
+length(SElong[,1])    ### 185
+
+png("BED_Cortex_H3K27ac_rank_BELD.png")
+plot(long6$CPM_k27,pch=20,xlim=c(-100,11000),ylim=c(-100,3000),cex=0.7)
+points(SElong$Rank,SElong$CPM_k27,pch=20,col="red")
+dev.off()
+png("BED_Cortex_H3K27ac_rank_K4me1.png")
+plot(long6$CPM_k4,pch=20,xlim=c(-100,11000),ylim=c(-100,3000),cex=0.7)
+points(SElong$Rank,SElong$CPM_k4,pch=20,col="red")
+dev.off()
+png("BED_Cortex_H3K27ac_rank_ATAC.png")
+plot(long6$CPM_ATAC,pch=20,xlim=c(-100,11000),ylim=c(-100,3000),cex=0.7)
+points(SElong$Rank,SElong$CPM_ATAC,pch=20,col="red")
+dev.off()
+
+
+
+## BED-nonBED
+#total <- read.table("Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+#length(total[,1]) ### [1] 10998
+#total2 <- data.frame(CPM_k4=(total$CPM_H3K4me1_rep1+total$CPM_H3K4me1_rep2)/2,CPM_k27=(total$CPM_H3K27ac_rep1+total$CPM_H3K27ac_rep2)/2,
+                     CPM_ATAC=(total$CPM_ATAC_WT_rep1+total$CPM_ATAC_WT_rep2)/2,total)
+#total3 <- total2[order(total2$CPM_k27),]
+#BED <-    total3[total3$CPM_k4>365 & total3$CPM_k27>365 & (total3$RPKM_H3K4me1_rep1+total3$RPKM_H3K4me1_rep2)/2>1.3 & (total3$RPKM_H3K27ac_rep1+total3$RPKM_H3K27ac_rep2)/2>1.3,]
+#nonBED <- total3[!row.names(total3) %in% row.names(BED),]
+#length(BED[,1])    ### 185
+#length(nonBED[,1]) ### 10813
+#write.table(BED,"BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",quote=FALSE)
+#write.table(nonBED,"BED_nonBEDTotal_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",quote=FALSE)
+
+
+
+## BED-nonBED-remain
+total <- read.table("Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+length(total[,1]) ### [1] 10998
+total2 <- data.frame(CPM_k4=(total$CPM_H3K4me1_rep1+total$CPM_H3K4me1_rep2)/2,CPM_k27=(total$CPM_H3K27ac_rep1+total$CPM_H3K27ac_rep2)/2,
+                     CPM_ATAC=(total$CPM_ATAC_WT_rep1+total$CPM_ATAC_WT_rep2)/2,total)
+total3 <- total2[order(total2$CPM_k27),]
+
+BED <-   total3[total3$CPM_k4>365 & total3$CPM_k27>365 & (total3$RPKM_H3K4me1_rep1+total3$RPKM_H3K4me1_rep2)/2>1.3 & (total3$RPKM_H3K27ac_rep1+total3$RPKM_H3K27ac_rep2)/2>1.3,]
+nonBED <-total3[total3$CPM_k4<365 & total3$CPM_k27<365 & (total3$RPKM_H3K4me1_rep1+total3$RPKM_H3K4me1_rep2)/2<1.3 & (total3$RPKM_H3K27ac_rep1+total3$RPKM_H3K27ac_rep2)/2<1.3,]
+remain <- total3[!row.names(total3) %in% c(row.names(BED),row.names(nonBED)),]
+length(BED[,1])    ### 185
+length(nonBED[,1]) ### 4905
+length(remain[,1]) ##  5908
+write.table(BED,"BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",quote=FALSE)
+write.table(nonBED,"BED_nonBEDTotal_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",quote=FALSE)
+write.table(remain,"BED_remainTotal_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",quote=FALSE)
+
+
+
+

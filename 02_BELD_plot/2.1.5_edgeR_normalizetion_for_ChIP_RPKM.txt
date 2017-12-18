@@ -1,0 +1,42 @@
+library("edgeR")
+data <- read.table("Merged_ChIP_whole_gene_counts_Jerry.txt",sep="\t",header=T,row.names=1)
+
+## for normalization, every column is independent
+## including only 2 WT or 2WT +2R106W , the results are the same
+## Normalize all data sets together
+data[1:5,]
+data_y <- DGEList(counts=data, group=c("H3K27ac","H3K27ac","H3K27me3","H3K27me3","H3K4me1","H3K4me1","H3K4me3","H3K4me3","WT","WT","R106W","R106W"))
+length_gene <- read.table("../01_GROseq/Gene_length.txt",header=T,row.names=1,sep="\t")
+
+cpm_raw <- cpm(data_y)
+cpm_order <- cpm_raw[row.names(length_gene),]
+
+
+rpm_total <- cbind(cpm_order,Length=length_gene)
+rpm_total[1:5,]
+rpkm_total <- round(rpm_total*1000/rpm_total$Length,3)
+rpkm_total[1,]
+
+total <- cbind(rpm_total,rpkm_total[,1:12])
+total[1:5,]
+
+ colnames(total)
+ [1] "H3K27ac_rep1"    "H3K27ac_rep2"    "H3K27me3_rep1"   "H3K27me3_rep2"  
+ [5] "H3K4me1_rep1"    "H3K4me1_rep2"    "H3K4me3_rep1"    "H3K4me3_rep2"   
+ [9] "ATAC_WT_rep1"    "ATAC_WT_rep2"    "ATAC_R106W_rep1" "ATAC_R106W_rep2"
+[13] "Length"          "H3K27ac_rep1"    "H3K27ac_rep2"    "H3K27me3_rep1"  
+[17] "H3K27me3_rep2"   "H3K4me1_rep1"    "H3K4me1_rep2"    "H3K4me3_rep1"   
+[21] "H3K4me3_rep2"    "ATAC_WT_rep1"    "ATAC_WT_rep2"    "ATAC_R106W_rep1"
+[25] "ATAC_R106W_rep2"
+
+
+
+colnames(total) <- c("CPM_H3K27ac_rep1","CPM_H3K27ac_rep2","CPM_H3K27me3_rep1","CPM_H3K27me3_rep2",
+                     "CPM_H3K4me1_rep1","CPM_H3K4me1_rep2","CPM_H3K4me3_rep1","CPM_H3K4me3_rep2",
+                     "CPM_ATAC_WT_rep1","CPM_ATAC_WT_rep2","CPM_ATAC_R106W_rep1","CPM_ATAC_R106W_rep2", "Length",
+                     "RPKM_H3K27ac_rep1","RPKM_H3K27ac_rep2","RPKM_H3K27me3_rep1","RPKM_H3K27me3_rep2",
+                     "RPKM_H3K4me1_rep1","RPKM_H3K4me1_rep2","RPKM_H3K4me3_rep1","RPKM_H3K4me3_rep2",
+                     "RPKM_ATAC_WT_rep1","RPKM_ATAC_WT_rep2","RPKM_ATAC_R106W_rep1","RPKM_ATAC_R106W_rep2")
+total[1,]
+write.table(total,"Merged_ChIP_whole_gene_counts_Jerry_RPKM.txt",sep="\t",quote=FALSE)
+
