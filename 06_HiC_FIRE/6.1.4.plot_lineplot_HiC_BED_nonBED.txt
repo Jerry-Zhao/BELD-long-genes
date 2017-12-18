@@ -1,0 +1,52 @@
+wt1 <- read.table("ActiveGene_RenLab_HiC_cortex_sigInter_intraChrom_2k10k_body_100kbupdown.txt",sep="\t",row.names=1)
+library(gplots)
+
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+BED  <- wt1_new[name_order,]
+BED[1:5,1:5]
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- wt1_new[name_order2,]
+nonBEDlong[1:5,1:5]
+
+length(BED[,1])
+length(nonBEDlong[,1])
+length(wt1_new[,1]) #[1] 10998
+length(BED[,1])  ## 185
+length(nonBEDlong[,1]) ## 185
+
+mean_wt_nonBEDlong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_BED      <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_nonBEDlong[i] <- mean(nonBEDlong[,i]); }
+for (i in 1:1400) { mean_wt_BED[i]   <- mean(BED[,i]); }
+png("BELD_RenLab_HiC_sigInter_intraChrom_2k10k_line_mean.png",width = 600, height = 600)
+plot(rep(1,1400),col="white",ylim=c(0,110))
+points(mean_wt_nonBEDlong, type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_wt_BED,   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(400,60,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=4,box.col="white")
+#legend(400,60,c("BED","nonBED long"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=4,box.col="white")
+dev.off()
+
+median_wt_nonBEDlong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_BED      <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_nonBEDlong[i] <- median(nonBEDlong[,i]); }
+for (i in 1:1400) { median_wt_BED[i]   <- median(BED[,i]); }
+#png("BED_RenLab_HiC_sigInter_intraChrom_2k10k_line_median.png",width = 600, height = 600)
+plot(rep(1,1400),col="white",ylim=c(0,100))
+points(median_wt_nonBEDlong, type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(median_wt_BED,   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,50,c("nonBED long","BED"),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),lty=3,lwd=4,box.col="white")#,text.col="white")
+#dev.off()
+
+
+
+
+
+

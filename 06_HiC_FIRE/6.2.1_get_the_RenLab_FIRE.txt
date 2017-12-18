@@ -1,0 +1,26 @@
+
+Download the 3167 FIREs (frequently interacting regions) of mouse cortex. (FIRE score >3)
+Table S5  Shen et al. 2012
+
+Total-FIRE: 3167
+Total-BED: 185	Overlap: 102
+Total-nonBED: 185	Overlap: 63
+
+
+fisher.test(rbind(c(102,185-102),c(63,185-63)),alternative="greater")
+
+	Fisher's Exact Test for Count Data
+
+data:  rbind(c(102, 185 - 102), c(63, 185 - 63))
+p-value = 3.325e-05
+alternative hypothesis: true odds ratio is greater than 1
+95 percent confidence interval:
+ 1.635754      Inf
+sample estimates:
+odds ratio 
+  2.374067 
+
+
+
+
+

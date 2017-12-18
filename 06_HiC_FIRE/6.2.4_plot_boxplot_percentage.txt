@@ -1,0 +1,29 @@
+total <- read.table("BELD_nonBELD_FIRE_overlap_percentage.xls",header=T,row.names=1,sep="\t")
+total[1:5,]
+boxplot(total$Percentage~factor(total$Category,levels=c("nonBEDlong","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,1),outcol="grey")
+
+png("FIREs_BELD_nonBELDlong_boxplot.png")
+boxplot(total$Percentage~factor(total$Category,levels=c("nonBEDlong","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,1),outcol="grey")
+dev.off()
+
+se <- total[total$Category=="BED",]
+nonse <- total[total$Category=="nonBEDlong",]
+length(se[,1]) ## [1] 185
+length(nonse[,1]) ## [1] 185
+length(se[se$Percentage>0,][,1]) ## [1] 102
+length(nonse[nonse$Percentage>0,][,1]) ## [1] 63
+ 
+t.test(se$Percentage,nonse$Percentage,alternative="greater") ## p-value = 0.000182
+
+	Welch Two Sample t-test
+
+data:  se$Percentage and nonse$Percentage
+t = 3.5993, df = 357.38, p-value = 0.000182
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 0.045753      Inf
+sample estimates:
+mean of x mean of y 
+0.1909544 0.1065121 
+
+

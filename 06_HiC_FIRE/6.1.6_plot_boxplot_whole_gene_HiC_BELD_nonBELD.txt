@@ -1,0 +1,33 @@
+se    <- read.table("Cortex_HiC_intraChrom_2k10k_whole_gene_count_BELD.txt",sep="\t",header=T,row.names=1)
+nonse <- read.table("Cortex_HiC_intraChrom_2k10k_whole_gene_count_nonBELDlong.txt",sep="\t",header=T,row.names=1)
+
+tmp1 <- data.frame(Category=rep("BELD",length(se[,2])),Interaction_per100kb=se[,2])
+tmp2 <- data.frame(Category=rep("nonBELD",length(nonse[,2])),Interaction_per100kb=nonse[,2])
+merge <- data.frame(rbind(tmp1,tmp2))
+t.test(se[,2],nonse[,2],alternative="greater")  ## p-value = p-value < 2.2e-16
+png("HiC_cortex_BELD_nonBELDlong_boxplot.png")
+boxplot(merge$Interaction~factor(merge$Category,levels=c("nonBELD","BELD")),col=c(rgb(255,184,95,max=255), rgb(0,170,160,max=255)),ylim=c(0,1000))
+dev.off()
+
+length(se[,1]) ## [1] 185
+length(nonse[,1]) ## [1] 185
+length(se[se$Interactions_per_100kb>0,][,1]) ## [1] 185
+length(nonse[nonse$Interactions_per_100kb>0,][,1]) ## [1]185
+t.test(se$Interactions_per_100kb,nonse$Interactions_per_100kb,alternative="greater") ## p-value < 2.2e-16
+
+	Welch Two Sample t-test
+
+data:  se$Interactions_per_100kb and nonse$Interactions_per_100kb
+t = 15.147, df = 275.07, p-value < 2.2e-16
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 216.1361      Inf
+sample estimates:
+mean of x mean of y 
+ 437.9410  195.3758 
+
+
+t.test(se$Interactions,nonse$Interactions,alternative="greater")
+
+
+

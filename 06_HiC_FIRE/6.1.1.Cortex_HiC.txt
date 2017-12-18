@@ -1,0 +1,183 @@
+/media/Project/SElong/Count_all_genes/HiC
+
+1. Download raw data
+ GSM938750 SRR501772/73/74/75/76/77 RenLab-HiC-cortex_replicate one
+ GSM938751 SRR501778/79/80/81 RenLab-HiC-cortex_replicate two
+
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep1_A SRR501772.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep1_B SRR501773.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep1_C SRR501774.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep1_D SRR501775.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep1_E SRR501776.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep1_F SRR501777.sra
+
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep2_A SRR501778.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep2_B SRR501779.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep2_C SRR501780.sra
+ ./fastq-dump.2.5.7 --split-3 -A RenLab_HiC_cortex_rep2_D SRR501781.sra
+
+ GSM722632 RenLab-H3K4me1-cortex
+ GSM851272 RenLab-H3K27ac-cortex
+ GSM722634 RenLab-Pol2-cortex
+ GSM722631 RenLab-CTCF-cortex
+
+
+2.mapping
+
+ /media/RNA/Genome/Bismark:
+ hicup_digester --genome mm10 --re1 A^AGCTT,HindIII mm10.fa
+
+ hicup --config cortex_HiC_rep1_configure ## map rep1
+ hicup --config cortex_HiC_rep2_configure ## map rep2
+
+ Convert to Homer-need files
+ hicup2homer RenLab_HiC_cortex_rep1_A_1_2.hicup.sam RenLab_HiC_cortex_rep1_B_1_2.hicup.sam RenLab_HiC_cortex_rep1_C_1_2.hicup.sam RenLab_HiC_cortex_rep1_D_1_2.hicup.sam 
+   RenLab_HiC_cortex_rep1_E_1_2.hicup.sam RenLab_HiC_cortex_rep1_F_1_2.hicup.sam 
+ hicup2homer RenLab_HiC_cortex_rep2_A_1_2.hicup.sam RenLab_HiC_cortex_rep2_B_1_2.hicup.sam RenLab_HiC_cortex_rep2_C_1_2.hicup.sam RenLab_HiC_cortex_rep2_D_1_2.hicup.sam
+
+ Convert to FitHiC-need files
+ hicup2fithic --digest /media/RNA/Genome/Bismark/Digest_mm10_HindIII_None_16-10-39_12-01-2017.txt 
+   RenLab_HiC_cortex_rep1_A_1_2.hicup.sam RenLab_HiC_cortex_rep1_B_1_2.hicup.sam RenLab_HiC_cortex_rep1_C_1_2.hicup.sam RenLab_HiC_cortex_rep1_D_1_2.hicup.sam
+   RenLab_HiC_cortex_rep1_E_1_2.hicup.sam RenLab_HiC_cortex_rep1_F_1_2.hicup.sam 
+ hicup2fithic --digest /media/RNA/Genome/Bismark/Digest_mm10_HindIII_None_16-10-39_12-01-2017.txt 
+   RenLab_HiC_cortex_rep2_A_1_2.hicup.sam RenLab_HiC_cortex_rep2_B_1_2.hicup.sam RenLab_HiC_cortex_rep2_C_1_2.hicup.sam RenLab_HiC_cortex_rep2_D_1_2.hicup.sam
+
+
+3. Homer
+ 3.1 make tag directory
+ makeTagDirectory RenLab_HiC_cortex_rep1_A -format HiCsummary RenLab_HiC_cortex_rep1_A_1_2.hicup.sam.homer 
+ makeTagDirectory RenLab_HiC_cortex_rep1_B -format HiCsummary RenLab_HiC_cortex_rep1_B_1_2.hicup.sam.homer  
+ makeTagDirectory RenLab_HiC_cortex_rep1_C -format HiCsummary RenLab_HiC_cortex_rep1_C_1_2.hicup.sam.homer 
+ makeTagDirectory RenLab_HiC_cortex_rep1_D -format HiCsummary RenLab_HiC_cortex_rep1_D_1_2.hicup.sam.homer
+ makeTagDirectory RenLab_HiC_cortex_rep1_E -format HiCsummary RenLab_HiC_cortex_rep1_E_1_2.hicup.sam.homer
+ makeTagDirectory RenLab_HiC_cortex_rep1_F -format HiCsummary RenLab_HiC_cortex_rep1_F_1_2.hicup.sam.homer
+
+ makeTagDirectory RenLab_HiC_cortex_rep2_A -format HiCsummary RenLab_HiC_cortex_rep2_A_1_2.hicup.sam.homer
+ makeTagDirectory RenLab_HiC_cortex_rep2_B -format HiCsummary RenLab_HiC_cortex_rep2_B_1_2.hicup.sam.homer
+ makeTagDirectory RenLab_HiC_cortex_rep2_C -format HiCsummary RenLab_HiC_cortex_rep2_C_1_2.hicup.sam.homer
+ makeTagDirectory RenLab_HiC_cortex_rep2_D -format HiCsummary RenLab_HiC_cortex_rep2_D_1_2.hicup.sam.homer
+
+ makeTagDirectory RenLab_HiC_cortex_merge -d RenLab_HiC_cortex_rep1_A RenLab_HiC_cortex_rep1_B RenLab_HiC_cortex_rep1_C RenLab_HiC_cortex_rep1_D RenLab_HiC_cortex_rep1_E
+    RenLab_HiC_cortex_rep1_F RenLab_HiC_cortex_rep2_A RenLab_HiC_cortex_rep2_B RenLab_HiC_cortex_rep2_C RenLab_HiC_cortex_rep2_D
+ 
+ ## copy a new directory and Quality controls and filtering
+ cp -r RenLab_HiC_cortex_merge RenLab_HiC_cortex_merge_filtered
+ makeTagDirectory RenLab_HiC_cortex_merge_filtered -update -genome mm10 -removePEbg -restrictionSite AAGCTT -both -removeSelfLigation -removeSpikes 10000 5
+  ## -removePEbg           # remove paired end tags within 1.5x fragment length on same chr
+  ## -restrictionSite      # AAGCTT for HindIII 
+  ## -both                 # Only keep reads if both ends of the paired-end read have a restriction site within the fragment length estimate 3' to the read. 
+  ## -removeSelfLigation   # Remove reads if their ends form a self ligation with adjacent restriction sites.
+  ## -removeSpikes 10000 5 # remove tags from regions with > than # times the average tags per size bp, suggest "-removeSpikes 10000 5"
+
+ ##Restriction Sites
+  One major problem that can arise during Hi-C is that "background" ligation events may occur.  These are ligation events that occur after sonication [I think] 
+  as they seem to occur between random fragments of DNA with no regard to restriction site used for the Hi-C assay.  In theory, all reads should be in the vicinity 
+  of the restriction site used for the assay, and if they aren't, there is a good chance they are noise (more later on this).  To see the distribution of reads around 
+  your restriction site, use the option "-restrictionSite <seq>" (i.e. "-restrictionSite AAGCTT").  You MUST specify the genome so that HOMER can figure out where the 
+  restriction sites are located (i.e. "-genome mm9").  If the restriction site has a lot of star activity, you can also add "-rsmis <#>" (i.e. "-rsmis 1") to indicate 
+  how many mismatches are tolerated in the sites.  By default it only looks for perfect restriction sites.
+
+ ##Filtering Uninformative Reads
+  The Hi-C protocol can produce sequencing libraries that contain many read pairs that are not representative of true interactions.  This includes continuous genomic 
+  fragments, self-ligation or re-ligation products, and background non-specific ligation that occurs independent of a restriction site.
+
+ 3.2 Hi-C Background Models: Normalizing Genomic Interactions for Linear Distance and Read Depth
+   analyzeHiC RenLab_HiC_cortex_merge_filtered -res 10000 -bgonly -cpu 12
+   analyzeHiC RenLab_HiC_cortex_merge_filtered -res 2000 -bgonly -cpu 12
+
+ ##The output will be automatically saved in the file "<tag dir>/HiCbackground_#res_bp.txt" (i.e. "HiCbackground_10000_bp.txt").
+
+
+
+4.TADs
+  cortex.domain.tar.gz  Mouse Cortex topological domains  mm9
+  mv cortex cortex_TADs_mm9
+
+  cp total.combined.domain RenLab_TADs_mouse_cortex_mm9.bed
+  perl format.pl
+  UCSC liftoover --> RenLab_TADs_mouse_cortex_mm10.txt
+  perl format2.pl
+  
+  
+  
+   The background model creation process can be broken down into the following steps (example uses resolution of 100kb):
+   1. Divide the genome into putative regions (i.e. chr1:0-10kb, chr1:10kb-20kb, ... chrY:890kb-900kb)
+   2. Calculate the total read coverage in each region
+   3. Calculate the fraction of interactions spanning any given distance with respect to read depth
+   4. Optimize read count model to correctly assign expected interaction counts in regions with uneven sequencing depth
+   5. Calculate variation in interaction frequencies as a function of distance.
+
+ 3.3 Finding Significant Interactions in Hi-C Data
+  3.3.1 Finding Significant Interactions from whole genome (might be slow)
+  %%%%% analyzeHiC RenLab_HiC_cortex_merge_filtered -res 10000 -superRes 10000 -maxDist 3000000 -interactions RenLab_HiC_cortex_sigInter_genome_10k10k.txt -nomatrix -cpu 12
+  %%%%% analyzeHiC RenLab_HiC_cortex_merge_filtered -res 2000  -superRes 10000 -maxDist 3000000 -interactions RenLab_HiC_cortex_sigInter_genome_2k10k.txt -nomatrix -cpu 12
+  %%%%% analyzeHiC RenLab_HiC_cortex_merge_filtered -res 2000  -superRes 2000  -maxDist 3000000 -interactions RenLab_HiC_cortex_sigInter_genome_2k2k.txt -nomatrix -cpu 12
+
+ ##This command will search for significant interactions in the genome at 1Mb resolution. The "-nomatrix" is optional, 
+   but since the default of analyzeHiC is to produce a matrix, you may want (or need) to stop creation of the matrix as it could be very large and consume too much memory.
+
+ ## Limiting the Search Space
+    The further apart regions get, the less reads that are likely to map between them, and the less likely that a significant interaction is to be found.  Depending on 
+    the resolution and the sequencing depth, it can be next to impossible to identify "significant interactions" past a certain distance.   To control the space that is 
+    searched, specify "-maxDist <#>" or "-minDist <#>".  This can dramatically speed up the search for high resolution interactions (i.e. "-res 10000 -maxDist 3000000").
+
+  # The premise behind finding significant interactions is simple enough: Look for pairs of regions that have more Hi-C reads between them than would be expected by chance. 
+    The expected number of reads is calculated using the background model (covered here).  The background model is used to model how many reads we expect to connect to 
+    each other region in the genome.  If regions are far away (or on separate chromosomes), the we expect only a small number of reads to connect them.  Likewise, if two 
+    regions are close to one another, we would expect a large number of interactions.  These expectations are also dependent on the number of total reads mapping to each 
+    locus (which may depend on the number of restriction sites etc. in the region).  The background model attempts to take all of these factors into account.
+
+    Since the total number of reads per region is fixed (and more or less constant for each region due to the unbiased nature of Hi-C), we test how these reads are 
+    distributed relative to the expectation.  For two given loci that could potentially interact, we model their randomly expected read counts using the cumulative 
+    binomial distribution, where the total number of trials is the number of reads that could possibly map between the loci (i.e. the region total), the rate of success 
+    is the expected interaction frequency, and the number of observed successes is the number of observed reads mapping between the loci.  In this setting, regions with 
+    only 1 or 2 reads between them will have high p-values, regardless of their expected interaction frequency, while regions with many interactions above expected will 
+    have low p-values. 
+
+  # The interaction file can be further analyzed with commands in the sections below, or it can be the starting point of your own custom analysis.
+
+  3.3.2 Finding Intra-chromosomal Interactions Genome-wide at High Resolution
+   A common task is to find all the interactions in the genome.  With more sequencing and better data quality, the hope is to find interactions between individual 
+    regulatory elements, at a resolution of 10kb or less (maybe 1kb or 500bp! depending on restriction enzyme used).  At these small resolutions it is near impossible 
+    to identify significant inter-chromosomal interactions, and the search space for inter-chromosomal interactions is massive.  
+
+   To speed up the process, HOMER will look at chromosomes individually which allows it to save on resources.  A separate program called findHiCInteractionsByChr.pl 
+   automates this process and helps speed up the calculation.  Here's an example:
+   %%%%%  findHiCInteractionsByChr.pl RenLab_HiC_cortex_merge_filtered -res 2000  -superRes 2000  -cpu 12 >RenLab_HiC_cortex_sigInter_intraChrom_2k2k.txt
+   %%%%%  findHiCInteractionsByChr.pl RenLab_HiC_cortex_merge_filtered -res 2000  -superRes 10000 -cpu 12 >RenLab_HiC_cortex_sigInter_intraChrom_2k10k.txt
+   %%%%%  findHiCInteractionsByChr.pl RenLab_HiC_cortex_merge_filtered -res 10000 -superRes 10000 -cpu 12 >RenLab_HiC_cortex_sigInter_intraChrom_10k10k.txt 
+
+  ##The first argument MUST be the Hi-C tag directory.  The output interaction formatted file is sent to stdout, so make sure to capture the output in a file. 
+    Other options are as follows:
+ -res <#> : resolution of analysis, see above, default: 2000
+ -superRes <#> : super resolution (window size), see above, default: 10000
+ -minDist <#> : Minimum distance between regions to consider for an interaction (default: -superRes value)
+ -maxDist <#> : Maximum distance between regions to consider for an interactions (default: 10,000,000) Changing this parameter may change the running time a bit
+ -pvalue <#> : pvalue cutoff, default: 0.01
+ -zscore <#> : modified z-score cutoff, default: 1.5
+ -cpu <#> : number of CPUs to use, default: 1 (remember that more CPUs will require more memory too)
+ -ped <background HiC directory> :  Will quantify background experiment reads at significant interactions.
+ -std <#> : exclude regions with sequencing depth exceeding # std deviations, default: 4)
+ -min <#> : exclude regions with sequencing depth less than this fraction of mean, default: 0.2)
+
+
+ ## Cicos for example genes
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+4.FitHiC
+
+
+
+
