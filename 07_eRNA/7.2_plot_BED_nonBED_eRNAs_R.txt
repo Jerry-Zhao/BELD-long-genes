@@ -1,0 +1,25 @@
+1. perl
+  perl 7.1_get_antisense_eRNA_nonBED_BED.pl
+    Total-transcripts: 54488	BED-overlap: 372	nonBED-overlap: 67
+    BED: 185	nonBED: 185
+    BED-eRNA: 133	nonBED-eRNA: 44
+
+
+2. R
+# Percentage of gene have eRNAs
+133/185 ## [1] 0.7189189  BED genes
+44/185 ## [1] 0.2378378  nonSE long genes
+fisher.test(matrix(c(133,185-133,44,185-44),ncol=2),alternative="greater") ## p-value < 2.2e-16
+ 
+## number of sRNAs per gene
+total <- read.table("BED_nonBED_GROseq_Homer_transcripts_raw_count.txt",sep="\t",header=T,row.names=1)
+boxplot(total$Counts~factor(total$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,10))
+png("Number_of_eRNAs_cortex_BELD_nonBELDlong.png")
+boxplot(total$Counts~factor(total$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,8),outcol="grey")
+dev.off()
+t.test(total[total$Category=="BED",][,2], total[total$Category=="nonBED",][,2], alternative="greater") ## p-value < 2.2e-16
+
+
+
+
+
