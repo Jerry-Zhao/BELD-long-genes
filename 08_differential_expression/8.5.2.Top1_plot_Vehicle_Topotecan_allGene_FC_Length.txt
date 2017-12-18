@@ -1,0 +1,28 @@
+1. Topotecan/Vehicle 
+total <- read.table("results_edgeR_King_etal_Vehicle_Topotecan_exonic_gene.xls",header=T,sep="\t",row.names=1)
+total[1:5,]
+
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+selong_name <- matrix(row.names(BED))
+nonselong_name <- matrix(row.names(nonBEDlong))
+selong <- total[selong_name,]
+nonselong <- total[nonselong_name,]
+
+t.test(selong$logFC,nonselong$logFC,alternative="less") ## p-value < p-value = 9.423e-05
+
+tmp1 <- data.frame(Category=rep("BED",length(selong[,1])),FC=selong[,1])
+tmp2 <- data.frame(Category=rep("nonBED",length(nonselong[,1])),FC=nonselong[,1])
+tmp1[1:5,]
+tmp2[1:5,]
+merge <- data.frame(rbind(tmp1,tmp2))
+boxplot(merge$FC~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(-2.5,1.5))
+
+
+png("Total_King_etal_Vehicle_Topotecan_BED_nonBEDlong_boxplot.png")
+boxplot(merge$FC~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(-2.5,1.5))
+dev.off()
+
+
+
+

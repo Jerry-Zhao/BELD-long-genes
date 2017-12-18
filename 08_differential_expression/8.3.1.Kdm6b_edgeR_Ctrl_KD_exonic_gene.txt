@@ -1,0 +1,20 @@
+
+  library("edgeR")
+  data <- read.table("Total_merge_Kdm6b_exonic_gene_Jerry.txt",sep="\t",header=T,row.names=1)
+  data_y <- DGEList(counts=data, group=c("Ctrl","KD","CtrlBic","KDBic"))
+  data[1:5,]
+  
+  length_gene <- read.table("Gene_length.txt",header=T,row.names=1,sep="\t") 
+  write.table(round(cpm(data_y),3),"results_edgeR_CPM_Kdm6b_Ctrl_KD_Bic_exonic_gene.xls",sep="\t",quote=FALSE)
+  cpm_total <- round(cpm(data_y),3)
+  
+  cpm_total1 <- cpm_total[,1:2]
+  cpm_keep1 <- cpm_total1[rowSums(cpm_total1) >= 1,]
+  cpm_keep1[1:5,]
+  total1 <- cbind(cpm_keep1,logFC=log(cpm_keep1[,2]/cpm_keep1[,1])/(log(2)),Length=length_gene[row.names(cpm_keep1),])
+  write.table(total1,file="results_edgeR_Kdm6b_Ctrl_KD_exonic_gene.xls",quote=FALSE,sep="\t")
+
+ 
+
+
+

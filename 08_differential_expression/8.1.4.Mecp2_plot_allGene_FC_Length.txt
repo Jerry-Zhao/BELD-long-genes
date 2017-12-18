@@ -1,0 +1,42 @@
+total <- read.table("results_edgeR_Total_GROseq_cortex_whole_gene.xls",header=T,sep="\t",row.names=1)
+total[1:5,]
+long <- total[total$Length>=100000,]
+fdr <- long[long$FDR<0.1,]
+#png("Total_RTT_GRO_Length_logFC_longGenes.png")
+plot(long$Length,long$logFC,xlim=c(0,2000000),pch=20,col=rgb(0,147,209,max=255),ylim=c(-1,1))
+#points(fdr$Length,fdr$logFC,col=rgb(224,160,37,max=255),pch=20)
+abline(h=0,col="grey30",lwd=3,lty=3)
+#dev.off()
+length(long[,1])                ### [1] 1301 total long genes
+length(long[long$logFC>0,][,1]) ### [1] 238  up long genes
+length(long[long$logFC<0,][,1]) ### [1] 1063 down long genes
+length(long[long$logFC==0,][,1])### [1] 0
+length(long[long$logFC>0,][,1])/length(long[,1]) ## [1] 0.1829362 18.2% up long genes
+length(long[long$logFC<0,][,1])/length(long[,1]) ## [1] 0.8170638 81.7% down long genes
+
+
+
+
+total <- read.table("results_edgeR_Total_GROseq_cortex_whole_gene.xls",header=T,sep="\t",row.names=1)
+total[1:5,]
+
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+selong_name <- matrix(row.names(BED))
+nonselong_name <- matrix(row.names(nonBEDlong))
+selong <- total[selong_name,]
+nonselong <- total[nonselong_name,]
+
+t.test(selong$logFC,nonselong$logFC,alternative="less") ## p-value = 1.926e-06
+
+tmp1 <- data.frame(Category=rep("BED",length(selong[,1])),FC=selong[,1])
+tmp2 <- data.frame(Category=rep("nonBED",length(nonselong[,1])),FC=nonselong[,1])
+tmp1[1:5,]
+tmp2[1:5,]
+merge <- data.frame(rbind(tmp1,tmp2))
+
+png("Boxplot_RTT_GRO_logFC_BELD_nonBEDlong.png")
+boxplot(merge$FC~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(-0.8,0.8),outcol="grey")
+dev.off()
+
+

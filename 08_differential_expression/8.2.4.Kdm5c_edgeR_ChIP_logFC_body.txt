@@ -1,0 +1,43 @@
+library("edgeR")
+  data <- read.table("Merged_Kdm5c_ChIP_cortex_H3K4me1_WT_KO_whole_gene.txt",sep="\t",header=T,row.names=1)
+  data_y <- DGEList(counts=data, group=c("WT","WT","KO","KO"))
+  data[1:5,]
+
+  keep <- rowSums(cpm(data_y)) >= 2
+  y <- data_y[keep,]
+  dim(y) ##  [1] 
+  y$samples$lib.size <- colSums(y$counts)
+  y <- calcNormFactors(y)
+  y$samples
+
+  plotMDS(y)
+  y <- estimateCommonDisp(y,verbose=TRUE)
+  y <- estimateTagwiseDisp(y)
+  plotBCV(y)
+
+  test_result  <- exactTest(y, pair=c("WT","KO"))
+  length(y$AveLogCPM)
+  diff_total <- data.frame(topTags(test_result, n=length(y$AveLogCPM)))
+  length_gene <- read.table("Gene_length.txt",header=T,row.names=1,sep="\t")
+  total <- cbind(diff_total,Length=length_gene[row.names(diff_total),])
+
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+selong_name <- matrix(row.names(BED))
+nonselong_name <- matrix(row.names(nonBEDlong))
+selong <- total[selong_name,]
+nonselong <- total[nonselong_name,]
+
+t.test(selong$logFC,nonselong$logFC,alternative="greater") ## p-value = 0.01638
+
+tmp1 <- data.frame(Category=rep("BED",length(selong[,1])),FC=selong[,1])
+tmp2 <- data.frame(Category=rep("nonBED",length(nonselong[,1])),FC=nonselong[,1])
+tmp1[1:5,]
+tmp2[1:5,]
+merge <- data.frame(rbind(tmp1,tmp2))
+
+png("Boxplot_Kdm5c_ChIP_logFC_cortex_H3K4me1_WT_KO_whole_gene.png")
+boxplot(merge$FC~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(-0.2,0.3))
+dev.off()
+
+

@@ -1,0 +1,27 @@
+library("edgeR")
+data <- read.table("Merged_Kdm5c_ChIP_cortex_H3K4me1_WT_KO_whole_gene.txt",sep="\t",header=T,row.names=1)
+data_y <- DGEList(counts=data, group=c("WT","WT","KO","KO"))
+cpm_total <- round(cpm(data_y),3)
+cpm_total[1:5,]
+
+annotation_raw <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation <- annotation_raw[order(-annotation_raw$Length),]
+name_order <- matrix(row.names(annotation))
+BED  <- cpm_total[name_order,]
+
+annotation_raw2 <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+annotation2 <- annotation_raw2[order(-annotation_raw2$Length),]
+name_order2 <- matrix(row.names(annotation2))
+nonBEDlong  <- cpm_total[name_order2,]
+ 
+tmp1 <- data.frame(Category=rep("BED",length(BED[,1])),Diff=((BED[,3]+BED[,4])/2)-((BED[,1]+BED[,2])/2))
+tmp2 <- data.frame(Category=rep("nonBED",length(nonBEDlong[,1])),Diff=((nonBEDlong[,3]+nonBEDlong[,4])/2)-((nonBEDlong[,1]+nonBEDlong[,2])/2))
+merge <- data.frame(rbind(tmp1,tmp2))
+png("Boxplot_Kdm5c_ChIP_RPMdiff_cortex_H3K4me1_WT_KO_whole_gene.png")
+boxplot(merge$Diff~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(-50,100),outcol="grey")
+dev.off()
+t.test(tmp1$Diff,tmp2$Diff,alternative="greater") ## p-value = 9.85e-07
+
+
+
+

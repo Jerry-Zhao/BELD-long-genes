@@ -1,0 +1,31 @@
+
+  library("edgeR")
+  data <- read.table("Total_GROseq_cortex_whole_gene_Jerry_new.txt",sep="\t",header=T,row.names=1)
+  data_y <- DGEList(counts=data, group=c("WT","WT","R106W","R106W"))
+
+  length_gene <- read.table("Gene_length.txt",header=T,row.names=1,sep="\t")
+#  keep <- rowSums(cpm(data_y)) >= 40 & rowSums(cpm(data_y))*1000/length_gene >=2
+  keep <- rowSums(cpm(data_y))*1000/length_gene >=2
+  y <- data_y[keep,]
+  dim(y) ##  [1] 12770     4
+  y$samples$lib.size <- colSums(y$counts)
+  y <- calcNormFactors(y)
+  y$samples
+
+  plotMDS(y)
+  y <- estimateCommonDisp(y,verbose=TRUE)
+  y <- estimateTagwiseDisp(y)
+  plotBCV(y)
+
+  test_result  <- exactTest(y, pair=c("WT","R106W"))
+
+  summary(decideTestsDGE(test_result,p.value=0.1))## 0.1
+  summary(decideTestsDGE(test_result))  #  0.05
+  summary(decideTestsDGE(test_result,p.value=0.01)) ## 
+  summary(decideTestsDGE(test_result,p.value=0.001)) ##
+  length(y$AveLogCPM)
+  diff_total <- data.frame(topTags(test_result, n=length(y$AveLogCPM)))
+  total <- cbind(diff_total,Length=length_gene[row.names(diff_total),])
+  write.table(total,file="results_edgeR_Total_GROseq_cortex_whole_gene.xls",quote=FALSE,sep="\t")
+
+

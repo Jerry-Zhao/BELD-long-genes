@@ -1,0 +1,37 @@
+
+library("edgeR")
+data_total <- read.table("journal.pbio.1002558.s001.TXT",sep="\t",header=T,row.names=1)
+data <- data_total[,1:63]
+data_y <- DGEList(counts=data, group=c(
+"Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl",
+"Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl",
+"Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl",
+"Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl","Ctrl",
+"ASD","ASD","ASD","ASD","ASD","ASD","ASD","ASD","ASD","ASD",
+"ASD","ASD","ASD","ASD","ASD","ASD","ASD","ASD","ASD","ASD",
+"ASD","ASD","ASD","ASD","ASD"))
+data[1:5,]
+  
+cpm_total <- round(cpm(data_y),3)
+keep <- rowSums(cpm(data_y)) >= 1
+y <- data_y[keep,]
+dim(y) ##  [1] 18455 10
+
+y$samples$lib.size <- colSums(y$counts)
+y <- calcNormFactors(y)
+y$samples
+plotMDS(y)
+y <- estimateCommonDisp(y,verbose=TRUE)
+y <- estimateTagwiseDisp(y)
+plotBCV(y)
+test_result  <- exactTest(y, pair=c("Ctrl","ASD"))
+
+length(y$AveLogCPM)
+total <- data.frame(topTags(test_result, n=length(y$AveLogCPM)))
+
+write.table(total,file="results_edgeR_Human_Ctrl_ASD_RPKM.xls",quote=FALSE,sep="\t")
+
+
+
+
+

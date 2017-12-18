@@ -1,0 +1,34 @@
+
+  library("edgeR")
+  data <- read.table("Total_merge_King_etal_Topotecan_Vehicle_exonic_gene_Jerry.txt",sep="\t",header=T,row.names=1)
+  data_y <- DGEList(counts=data, group=c("Vehicle","Vehicle","Vehicle","Vehicle","Vehicle","Topotecan","Topotecan","Topotecan","Topotecan","Topotecan"))
+  data[1:5,]
+  
+  length_gene <- read.table("Gene_length.txt",header=T,row.names=1,sep="\t") 
+  cpm_total <- round(cpm(data_y),3)
+  
+  keep <- rowSums(cpm(data_y)) >= 1
+  y <- data_y[keep,]
+  dim(y) ##  [1] 18455 10
+
+  y$samples$lib.size <- colSums(y$counts)
+  y <- calcNormFactors(y)
+  y$samples
+  plotMDS(y)
+  y <- estimateCommonDisp(y,verbose=TRUE)
+  y <- estimateTagwiseDisp(y)
+  plotBCV(y)
+  test_result  <- exactTest(y, pair=c("Vehicle","Topotecan"))
+
+  length(y$AveLogCPM)
+  diff_total <- data.frame(topTags(test_result, n=length(y$AveLogCPM)))
+  total <- cbind(diff_total,Length=length_gene[row.names(diff_total),])
+
+  write.table(total,file="results_edgeR_King_etal_Vehicle_Topotecan_exonic_gene.xls",quote=FALSE,sep="\t")
+
+
+
+
+
+
+
