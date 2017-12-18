@@ -1,0 +1,29 @@
+total <- read.table("Data_length_PI30_ChIP_RPKM_N2A_WT.xls",sep="\t",header=T,row.names=1)
+length(total[,1]) ### [1] 11911
+
+total2 <- data.frame(CPM_k27=total$CPM_N2A_H3K27ac_rep1,total)
+long5 <- total2[order(total2$CPM_k27),]
+
+
+png("SE_N2A_H3K27ac_long_rank.png")
+plot(long5$CPM_k27,pch=20,xlim=c(-100,12000),ylim=c(-100,2500),cex=0.7)
+abline(-11400,1,col=rgb(0,170,160,max=255),lwd=3)
+points(long5$CPM_k27,pch=20,cex=0.7)
+lines(x=c(-300,11700), y=c(450,450), lty="dashed", col="grey",lwd=1)
+dev.off()
+
+
+SElong <-    long5[long5$CPM_k27>450 & long5$RPKM_N2A_H3K27ac_rep1>1.3,]
+nonSElong <-    long5[long5$Length > 100000 & long5$CPM_k27<450 & long5$RPKM_N2A_H3K27ac_rep1<1.3,]
+length(SElong[,1])    ### 91
+length(nonSElong[,1]) ### 658
+
+write.table(SElong,   "BED_BED_Data_length_PI30_ChIP_RPKM_N2A.xls",sep="\t",quote=FALSE)
+write.table(nonSElong,"BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_N2A.xls",sep="\t",quote=FALSE)
+
+
+
+
+
+
+

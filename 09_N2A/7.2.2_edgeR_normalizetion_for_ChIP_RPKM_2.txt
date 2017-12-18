@@ -1,0 +1,26 @@
+library("edgeR")
+data <- read.table("N2A_H3K27ac_whole_gene_counts_Jerry.txt",sep="\t",header=T,row.names=1)
+
+data[1:5,]
+data_y <- DGEList(counts=data, group=c("H3K27ac"))
+length_gene <- read.table("Gene_length.txt",header=T,row.names=1,sep="\t")
+
+cpm_raw <- cpm(data_y)
+cpm_new <- cpm_raw[row.names(length_gene),]
+
+rpm_total <- cbind(cpm_new,Length=length_gene)
+rpm_total[1:5,]
+rpkm_total <- round(rpm_total*1000/rpm_total$Length,3)
+rpkm_total[1,]
+
+total <- cbind(rpm_total,rpkm_total[,1])
+total[1:5,]
+
+colnames(total)
+# [1] "N2A_H3K27ac_rep1" "Length"           "rpkm_total[, 1]"
+ 
+colnames(total) <- c("CPM_N2A_H3K27ac_rep1","Length","RPKM_N2A_H3K27ac_rep1")
+
+total[1,]
+write.table(total,"N2A_H3K27ac_whole_gene_counts_Jerry_RPKM.txt",sep="\t",quote=FALSE)
+

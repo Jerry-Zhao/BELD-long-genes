@@ -1,0 +1,35 @@
+
+##### N2A WT
+total <- read.table("Merged_GROseq_PI30_N2A_RPKM_Length_Jerry.xls",sep="\t",header=T,row.names=1)
+total[1,]
+
+length(total[,1]) #22234 Total gene >1kb
+length(total[total$RPKM_WT1>0.5,][,1]) #RPKM >0.5     11928
+length(total[total$RPKM_WT1>0.5 & total$BODY30_WT1==0,][,1]) ## RPKM>0.5 and Body_density=0   17
+length(total[total$RPKM_WT1>0.5 & total$BODY30_WT1>0,][,1]) ## RPKM>0.5 and Body_density>0    11911
+data <- total[total$RPKM_WT1>0.5 & total$BODY30_WT1>0,]
+length(data[,1]) ## 11911
+
+short  <- data[data$Length<100000,]
+long   <- data[data$Length>=100000,]
+png("Length_PI30_N2A_WT.png")
+plot(short$Length,(short$TSS30_WT1/330)/(short$BODY30_WT1/(short$Length-300)),ylim=c(0,600),xlim=c(0,1000000),col=rgb(0,170,160,max=255),pch=20)
+points(long$Length,(long$TSS30_WT1/330)/(long$BODY30_WT1/(long$Length-300)),col=rgb(255,122,90,max=255),pch=20)
+dev.off()
+
+raw <- total[total$RPKM_WT1>0.5 & total$BODY30_WT1>0,]
+raw[1,]
+length(raw[,1])
+new <- cbind(raw,PI30=(raw$TSS30_WT1/330)/(raw$BODY30_WT1/(raw$Length-300)))
+new[1,]
+write.table(new,file="Data_length_PI_N2A_WT.xls",quote=FALSE,sep="\t")
+
+chip_raw <- read.table("N2A_H3K27ac_whole_gene_counts_Jerry_RPKM.txt",sep="\t",header=T,row.names=1)
+length(chip_raw[,1]) ## 29237
+chip <- chip_raw[row.names(new),]
+length(chip[,1])     ## 11911
+total2 <- cbind(chip,new)
+write.table(total2,file="Data_length_PI30_ChIP_RPKM_N2A_WT.xls",quote=FALSE,sep="\t")
+
+
+
