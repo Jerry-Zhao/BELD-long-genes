@@ -1,0 +1,55 @@
+
+
+all <- read.table("Human_H3K27ac_PFC_1_activeGene_RPKM_mouseID.txt",sep="\t",header=T,row.names=1)
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+BED_names <- matrix(row.names(BED))
+nonBEDlong_names <- matrix(row.names(nonBEDlong))
+bed <- all[BED_names,][,2]
+nonbed <- all[nonBEDlong_names,][,2]
+t.test(bed,nonbed,alternative="greater") ## p-value < 2.2e-16
+tmp1 <- data.frame(Category=rep("BED",length(bed)),      FPKM=bed)
+tmp2 <- data.frame(Category=rep("nonBED",length(nonbed)),FPKM=nonbed)
+merge <- data.frame(rbind(tmp1,tmp2))
+png("FPKM_Human_H3K27ac_PFC_1_BED_nonBEDlong.png")
+boxplot(merge$FPKM~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,3),outcol="grey")
+dev.off()
+
+
+
+
+all <- read.table("Human_H3K27ac_PFC_2_activeGene_RPKM_mouseID.txt",sep="\t",header=T,row.names=1)
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+BED_names <- matrix(row.names(BED))
+nonBEDlong_names <- matrix(row.names(nonBEDlong))
+bed <- all[BED_names,][,2]
+nonbed <- all[nonBEDlong_names,][,2]
+t.test(bed,nonbed,alternative="greater") ## p-value < 2.2e-16
+tmp1 <- data.frame(Category=rep("BED",length(bed)),      FPKM=bed)
+tmp2 <- data.frame(Category=rep("nonBED",length(nonbed)),FPKM=nonbed)
+merge <- data.frame(rbind(tmp1,tmp2))
+png("FPKM_Human_H3K27ac_PFC_2_BED_nonBEDlong.png")
+boxplot(merge$FPKM~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,3),outcol="grey")
+dev.off()
+
+
+
+
+all <- read.table("Human_H3K27ac_dlPFC_1_activeGene_RPKM_mouseID.txt",sep="\t",header=T,row.names=1)
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",sep="\t",header=T,row.names=1)
+BED_names <- matrix(row.names(BED))
+nonBEDlong_names <- matrix(row.names(nonBEDlong))
+bed <- all[BED_names,][,2]
+nonbed <- all[nonBEDlong_names,][,2]
+t.test(bed,nonbed,alternative="greater") ## p-value = 3.936e-16
+tmp1 <- data.frame(Category=rep("BED",length(bed)),      FPKM=bed)
+tmp2 <- data.frame(Category=rep("nonBED",length(nonbed)),FPKM=nonbed)
+merge <- data.frame(rbind(tmp1,tmp2))
+png("FPKM_Human_H3K27ac_dlPFC_1_BED_nonBEDlong.png")
+boxplot(merge$FPKM~factor(merge$Category,levels=c("nonBED","BED")),col=c(rgb(255,184,95,max=255),rgb(0,170,160,max=255)),ylim=c(0,3),outcol="grey")
+dev.off()
+
+
+

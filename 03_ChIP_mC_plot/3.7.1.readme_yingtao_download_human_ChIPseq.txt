@@ -1,0 +1,108 @@
+
+GSE67978
+Vermunt MW, Tan SC, Castelijns B, Geeven G et al. Epigenomic annotation of gene regulatory alterations during evolution of the primate brain. Nat Neurosci 2016 Mar;19(3):494-503. PMID: 26807951
+
+GSM1660049	Human_H3K27ac_PFC_1 SRR1978999 H3K27ac Human Brain PrefrontalCortex HS1
+GSM1660050	Human_H3K27ac_PFC_2 SRR1979000 H3K27ac Human Brain PrefrontalCortex HS2 ## ABI solid
+GSM1660051	Human_H3K27ac_PFC_3 SRR1979001 H3K27ac Human Brain PrefrontalCortex HS3
+
+
+GSE40465
+Vermunt MW, Reinink P, Korving J, de Bruijn E et al. Large-scale identification of coregulated enhancer networks in the adult human brain. Cell Rep 2014 Oct 23;9(2):767-79. PMID: 25373911
+
+GSM1119134	Human_H3K27ac_AIC_1 SRR823783 Region_20 - Anterior Insular Cortex, Brain1, H3K27ac ChIP
+GSM1119172	Human_H3K27ac_PC_1 SRR823821 Region_60 - Piriform Cortex, Brain1, H3K27ac ChIP
+GSM1119200	Human_H3K27ac_AIC_2 SRR823849 Region_20 - Anterior Insular Cortex, Brain2, H3K27ac ChIP
+
+
+GSE72468
+Liu F, Hon GC, Villa GR, Turner KM et al. EGFR Mutation Promotes Glioblastoma through Epigenome and Transcription Factor Network Remodeling. Mol Cell 2015 Oct 15;60(2):307-18. PMID: 26455392
+dorsolateral prefrontal cortex  
+GSM1866052	Human_H3K27ac_dlPFC_1 SRR2226652 ChIPseq_DLFC_H3K27ac.AY389
+GSM1866055	Human_H3K27ac_Hippo_1 SRR2226655 ChIPseq_Hippo_H3K27ac.AY390
+
+
+
+./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_PFC_1 SRR1978999.sra
+#./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_PFC_2 SRR1979000.sra ## ABI solid
+./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_PFC_3 SRR1979001.sra
+./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_AIC_1 SRR823783.sra
+./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_PC_1 SRR823821.sra
+./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_AIC_2 SRR823849.sra
+./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_dlPFC_1 SRR2226652.sra
+./fastq-dump.2.8.2 --split-3 -A Human_H3K27ac_Hippo_1 SRR2226655.sra
+
+mv Human_H3K27ac_PFC_3.fastq Human_H3K27ac_PFC_2.fastq
+
+bowtie -v 2 -m 1 -p 3 /media/RNA/Genome/Bowtie/hg19 -q Human_H3K27ac_PFC_1.fastq -S Human_H3K27ac_PFC_1.sam
+bowtie -v 2 -m 1 -p 3 /media/RNA/Genome/Bowtie/hg19 -q Human_H3K27ac_PFC_2.fastq -S Human_H3K27ac_PFC_2.sam
+bowtie -v 2 -m 1 -p 3 /media/RNA/Genome/Bowtie/hg19 -q Human_H3K27ac_dlPFC_1.fastq -S Human_H3K27ac_dlPFC_1.sam
+bowtie -v 2 -m 1 -p 3 /media/RNA/Genome/Bowtie/hg19 -q Human_H3K27ac_AIC_1.fastq -S Human_H3K27ac_AIC_1.sam
+bowtie -v 2 -m 1 -p 3 /media/RNA/Genome/Bowtie/hg19 -q Human_H3K27ac_AIC_2.fastq -S Human_H3K27ac_AIC_2.sam
+bowtie -v 2 -m 1 -p 3 /media/RNA/Genome/Bowtie/hg19 -q Human_H3K27ac_PC_1.fastq -S Human_H3K27ac_PC_1.sam
+bowtie -v 2 -m 1 -p 3 /media/RNA/Genome/Bowtie/hg19 -q Human_H3K27ac_Hippo_1.fastq -S Human_H3K27ac_Hippo_1.sam
+
+
+Human_H3K27ac_PFC_1
+ Working on the bowtie mapping.
+# reads processed: 22296757
+# reads with at least one reported alignment: 18472825 (82.85%)
+# reads that failed to align: 306476 (1.37%)
+# reads with alignments suppressed due to -m: 3517456 (15.78%)
+Reported 18472825 alignments to 1 output stream(s)
+
+Working on removing the unmapped reads.
+Total-Bowtie output: 22296784	 title-lines: 27
+Total-reads: 22296757
+Unique-mapped: 18472825
+Un-mapped: 3823932
+
+
+Human_H3K27ac_PFC_2
+ Working on the bowtie mapping.
+# reads processed: 28528907
+# reads with at least one reported alignment: 23716602 (83.13%)
+# reads that failed to align: 760161 (2.66%)
+# reads with alignments suppressed due to -m: 4052144 (14.20%)
+Reported 23716602 alignments to 1 output stream(s)
+
+Working on removing the unmapped reads.
+Total-Bowtie output: 28528934	 title-lines: 27
+Total-reads: 28528907
+Unique-mapped: 23716602
+Un-mapped: 4812305
+
+
+Human_H3K27ac_dlPFC_1
+ Working on the bowtie mapping.
+# reads processed: 39950544
+# reads with at least one reported alignment: 26905467 (67.35%)
+# reads that failed to align: 5418117 (13.56%)
+# reads with alignments suppressed due to -m: 7626960 (19.09%)
+Reported 26905467 alignments to 1 output stream(s)
+
+Working on removing the unmapped reads.
+Total-Bowtie output: 39950571	 title-lines: 27
+Total-reads: 39950544
+Unique-mapped: 26905467
+Un-mapped: 13045077
+
+
+Human_H3K27ac_PC_1
+ Working on the bowtie mapping.
+# reads processed: 15593654
+# reads with at least one reported alignment: 12321538 (79.02%)
+# reads that failed to align: 661855 (4.24%)
+# reads with alignments suppressed due to -m: 2610261 (16.74%)
+Reported 12321538 alignments to 1 output stream(s)
+
+Working on removing the unmapped reads.
+Total-Bowtie output: 15593681	 title-lines: 27
+Total-reads: 15593654
+Unique-mapped: 12321538
+Un-mapped: 3272116
+
+
+
+
+

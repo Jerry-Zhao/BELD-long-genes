@@ -1,0 +1,74 @@
+mc_raw  <- read.table("WT_Nex_p_mC_5coverage_allgene_body_100k_CH.txt",sep="\t",row.names=1)
+library(gplots)
+
+dim(mc_raw)
+mc_small <-   matrix(rep(0,length(mc_raw[,1])*500), ncol=500)
+for(i in 1:500){mc_small[,i] <- (mc_raw[,(i-1)*10+1] + mc_raw[,(i-1)*10+2] + mc_raw[,(i-1)*10+3] + mc_raw[,(i-1)*10+4] + mc_raw[,(i-1)*10+5] + 
+                                  mc_raw[,(i-1)*10+6] + mc_raw[,(i-1)*10+7] + mc_raw[,(i-1)*10+8] + mc_raw[,(i-1)*10+9] + mc_raw[,(i-1)*10+10] )/10}
+mc <- cbind(mc_small[,1:200],mc_raw[,2001:3000],mc_small[,301:500]) ## up/down is 1/5 size of the gene body
+dim(mc)
+
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+selong <- matrix(row.names(BED))
+nonselong <- matrix(row.names(nonBEDlong))
+mc_selong    <- mc[selong,]
+mc_nonselong <- mc[nonselong,]
+dim(mc_selong) ## [1]  185 1400
+dim(mc_nonselong) ## [1]  185 1400
+
+#### mean
+mean_mc_selong         <- as.matrix(rep(0,1400),nrow=1)
+mean_mc_nonselong      <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_mc_selong[i]   <- mean(mc_selong[,i]); }
+for (i in 1:1400) { mean_mc_nonselong[i]   <- mean(mc_nonselong[,i]); }
+png("BELD_WT_Nex_p_mC_5coverage_body_100kbupdown_CH.png")
+plot(rep(1,1400),col="white",ylim=c(0,0.06))
+points(mean_mc_nonselong[2:1400], type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_mc_selong[2:1400], type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(0,0.8,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=4,box.col="white",cex=0.7)
+#legend(0,0.8,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=4,box.col="white",cex=0.7)
+dev.off()
+
+
+
+
+hmc_raw  <- read.table("WT_Nex_p_hmC_5coverage_allgene_body_100k_CH.txt",sep="\t",row.names=1)
+library(gplots)
+
+dim(hmc_raw)
+hmc_small <-   matrix(rep(0,length(hmc_raw[,1])*500), ncol=500)
+for(i in 1:500){hmc_small[,i] <- (hmc_raw[,(i-1)*10+1] + hmc_raw[,(i-1)*10+2] + hmc_raw[,(i-1)*10+3] + hmc_raw[,(i-1)*10+4] + hmc_raw[,(i-1)*10+5] +
+                                  hmc_raw[,(i-1)*10+6] + hmc_raw[,(i-1)*10+7] + hmc_raw[,(i-1)*10+8] + hmc_raw[,(i-1)*10+9] + hmc_raw[,(i-1)*10+10] )/10}
+hmc <- cbind(hmc_small[,1:200],hmc_raw[,2001:3000],hmc_small[,301:500]) ## up/down is 1/5 size of the gene body
+dim(hmc)
+
+BED <- read.table("../02_BELD/BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+nonBEDlong <- read.table("../02_BELD/BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t",row.names=1)
+selong <- matrix(row.names(BED))
+nonselong <- matrix(row.names(nonBEDlong))
+hmc_selong    <- hmc[selong,]
+hmc_nonselong <- hmc[nonselong,]
+dim(hmc_selong) ## [1]  185 1400
+dim(hmc_nonselong) ## [1]  185 1400
+
+#### mean
+mean_hmc_selong         <- as.matrix(rep(0,1400),nrow=1)
+mean_hmc_nonselong      <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_hmc_selong[i]   <- mean(hmc_selong[,i]); }
+for (i in 1:1400) { mean_hmc_nonselong[i]   <- mean(hmc_nonselong[,i]); }
+png("BELD_WT_Nex_p_hmC_5coverage_body_100kbupdown_CH.png")
+plot(rep(1,1400),col="white",ylim=c(0,0.06))
+points(mean_hmc_nonselong[2:1400], type="l",col=rgb(255,184,95,max=255),lwd=3)
+points(mean_hmc_selong[2:1400], type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(0,0.8,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=4,box.col="white",cex=0.7)
+#legend(0,0.8,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=4,box.col="white",cex=0.7)
+dev.off()
+
+
+
+
+
+
+
+

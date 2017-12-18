@@ -1,0 +1,660 @@
+wt1 <- read.table("Body_Mo_WT_excitatory_H3K27ac_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/22557367
+wt2 <- read.table("Body_Mo_WT_excitatory_H3K27ac_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/26151360
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_Mo_WT_H3K27ac_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,40))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,40))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_Mo_WT_excitatory_H3K4me1_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/35446101
+wt2 <- read.table("Body_Mo_WT_excitatory_H3K4me1_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/33548288
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_Mo_WT_H3K4me1_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,12))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_Our_cortex_H3K4me3_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/23764454
+wt2 <- read.table("Body_Our_cortex_H3K4me3_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/28261959
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_OurH3K4me3_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,100))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_Nex_p_WT_rep1_ATAC_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/46950638
+wt2 <- read.table("Body_Nex_p_WT_rep2_ATAC_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/37473435
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_ATAC_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,40))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H3K27ac_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/72096607
+wt2 <- read.table("Body_201707_WT_H3K27ac_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/39635083
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H3K27ac_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,25))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H3K36me3_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/26268964
+wt2 <- read.table("Body_201707_WT_H3K36me3_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/97632459
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H3K36me3_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,8))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H3K4me1_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/30092091
+wt2 <- read.table("Body_201707_WT_H3K4me1_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/53831835
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H3K4me1_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,10))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H3K4me3_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/80774272
+wt2 <- read.table("Body_201707_WT_H3K4me3_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/83040387
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H3K4me3_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,100))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H3K79me2_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/92216556
+wt2 <- read.table("Body_201707_WT_H3K79me2_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/58683063
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H3K79me2_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,12))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H3K9me3_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/39955833
+wt2 <- read.table("Body_201707_WT_H3K9me3_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/23678180
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H3K9me3_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,5.5))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H4K16ac_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/58566250
+wt2 <- read.table("Body_201707_WT_H4K16ac_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/86791236
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H4K16ac_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,5.5))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_H4K20me3_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/24843073
+wt2 <- read.table("Body_201707_WT_H4K20me3_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/51028097
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_H4K20me3_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,5.5))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_Pol2Ser2p_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/82282396
+wt2 <- read.table("Body_201707_WT_Pol2Ser2p_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/81145194
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_Pol2Ser2p_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,5.5))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_Pol2Ser5p_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/63862000
+wt2 <- read.table("Body_201707_WT_Pol2Ser5p_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/84662479
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_Pol2Ser5p_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,5.5))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
+wt1 <- read.table("Body_201707_WT_Pol2Total_rep1_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/81850584
+wt2 <- read.table("Body_201707_WT_Pol2Total_rep2_activeGene_100kbupdown.txt",sep="\t",row.names=1)*30000000/90416966
+
+selong <- read.table("BED_BED_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_selong <- matrix(row.names(selong))
+nonselong <- read.table("BED_nonBEDlong_Data_length_PI30_ChIP_RPKM_cortex_WT.xls",header=T,sep="\t")
+name_nonselong <- matrix(row.names(nonselong))
+wt1_small <-   matrix(rep(0,length(wt1[,1])*600), ncol=600)
+for(i in 1:600){wt1_small[,i] <- (wt1[,(i-1)*5+1] + wt1[,(i-1)*5+2] + wt1[,(i-1)*5+3] + wt1[,(i-1)*5+4] + wt1[,(i-1)*5+5])/5}
+wt1_new <- cbind(wt1_small[,1:200],wt1[,1001:2000],wt1_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt1_new)
+wt2_small <-   matrix(rep(0,length(wt2[,1])*600), ncol=600)
+for(i in 1:600){wt2_small[,i] <- (wt2[,(i-1)*5+1] + wt2[,(i-1)*5+2] + wt2[,(i-1)*5+3] + wt2[,(i-1)*5+4] + wt2[,(i-1)*5+5])/5}
+wt2_new <- cbind(wt2_small[,1:200],wt2[,1001:2000],wt2_small[,401:600]) ## up/down is 1/5 size of the gene body
+dim(wt2_new)
+wt_selong  <- (wt1_new[name_selong,] + wt2_new[name_selong,])/2
+wt_nonselong  <- (wt1_new[name_nonselong,] + wt2_new[name_nonselong,])/2
+median_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+median_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { median_wt_selong[i]   <- median(wt_selong[,i]); }
+for (i in 1:1400) { median_wt_nonselong[i]   <- median(wt_nonselong[,i]); }
+mean_wt_selong    <- as.matrix(rep(0,1400),nrow=1)
+mean_wt_nonselong    <- as.matrix(rep(0,1400),nrow=1)
+for (i in 1:1400) { mean_wt_selong[i]   <- mean(wt_selong[,i]); }
+for (i in 1:1400) { mean_wt_nonselong[i]   <- mean(wt_nonselong[,i]); }
+
+png("Line_BELD_201707_WT_Pol2Total_body_median.png")
+plot(rep(1,1400),col="white",ylim=c(0,5.5))
+points(median_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(median_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+#legend(600,5.5,c("",""),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#legend(600,5.5,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+dev.off()
+#png("BED__mean.png")
+plot(rep(1,1400),col="white",ylim=c(0,20))
+points(mean_wt_nonselong[1:1400],type="l",col=rgb(255,184,95,max=255),   lwd=3)
+points(mean_wt_selong[1:1400],   type="l",col=rgb(0,170,160,max=255),lwd=3)
+legend(1000,20,c("BED","nonBEDlong"),col=c(rgb(0,170,160,max=255),rgb(255,184,95,max=255)),lty=1,lwd=3,box.col="white")
+#dev.off()
+
+
+
+
+
